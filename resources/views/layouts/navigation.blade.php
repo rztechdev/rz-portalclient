@@ -16,7 +16,7 @@
     <!-- Branding Header -->
     <div class="h-16 shrink-0 flex items-center justify-between px-6 border-b border-zinc-200/60 dark:border-zinc-800/60 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 group font-sans">
-            <img src="{{ asset('images/logo_rz_teks.jpeg') }}" alt="RZ Digital Creative Logo" class="h-8 w-auto object-contain rounded-lg shadow-2xs group-hover:scale-105 transition-transform duration-300">
+            <img src="{{ asset('images/logo_rz_teks.png') }}" alt="RZ Digital Creative Logo" class="h-8 w-auto object-contain brightness-0 dark:brightness-100 group-hover:scale-105 transition-transform duration-300">
             <div x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" class="flex flex-col">
                 <span class="text-sm font-black text-zinc-900 dark:text-white tracking-tight leading-none">RZ Portal</span>
                 <span class="text-[9px] font-mono text-emerald-500 dark:text-emerald-400 font-bold uppercase tracking-wider mt-0.5">Control Center</span>

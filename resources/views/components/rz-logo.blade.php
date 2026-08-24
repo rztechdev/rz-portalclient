@@ -16,8 +16,8 @@
 
 <div {{ $attributes->merge(['class' => 'flex items-center gap-2']) }}>
     <img 
-        src="{{ asset('images/logo_rz_teks.jpeg') }}" 
-        alt="RZ Digital Creative Logo" 
-        class="{{ $heightClass }} w-auto object-contain rounded-lg shadow-2xs hover:opacity-95 transition-opacity"
+        src="{{ asset('images/logo_rz_teks.png') }}"
+        alt="RZ Digital Creative Logo"
+        class="{{ $heightClass }} w-auto object-contain brightness-0 dark:brightness-100 hover:opacity-95 transition-opacity"
     >
 </div>
