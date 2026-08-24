@@ -26,16 +26,16 @@ class ProjectPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->can('projects.manage');
     }
 
     public function update(User $user, Project $project): bool
     {
-        return $user->hasRole('admin');
+        return $user->can('projects.manage');
     }
 
     public function delete(User $user, Project $project): bool
     {
-        return $user->hasRole('admin');
+        return $user->can('projects.manage');
     }
 }

@@ -28,16 +28,16 @@ class TaskPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->can('tasks.manage');
     }
 
     public function update(User $user, Task $task): bool
     {
-        return $user->hasRole('admin');
+        return $user->can('tasks.manage');
     }
 
     public function delete(User $user, Task $task): bool
     {
-        return $user->hasRole('admin');
+        return $user->can('tasks.manage');
     }
 }

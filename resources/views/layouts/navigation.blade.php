@@ -46,7 +46,7 @@
         </a>
 
         <!-- Tiket Saya Link (Klien) -->
-        @if(auth()->user()->hasRole('client'))
+        @can('tickets.create')
             @php
                 $isTickets = request()->routeIs('tickets.*');
             @endphp
@@ -60,7 +60,7 @@
                 <span class="material-symbols-outlined text-[19px] {{ $isTickets ? 'text-emerald-500 dark:text-emerald-400 scale-105' : 'text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 group-hover:scale-110' }} transition-all duration-300">confirmation_number</span>
                 <span x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" class="truncate">Tiket Saya</span>
             </a>
-        @endif
+        @endcan
 
         <!-- Mode Eksekutif Header -->
         @if(auth()->user()->hasRole('ceo'))
@@ -71,7 +71,7 @@
         @endif
 
         <!-- Tiket Masuk Link (Admin / Teknisi) -->
-        @if(auth()->user()->hasRole('admin'))
+        @can('tickets.manage')
             @php
                 $isAdminTickets = request()->routeIs('admin.tickets*');
             @endphp
@@ -85,7 +85,7 @@
                 <span class="material-symbols-outlined text-[19px] {{ $isAdminTickets ? 'text-emerald-500 dark:text-emerald-400 scale-105' : 'text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 group-hover:scale-110' }} transition-all duration-300">support_agent</span>
                 <span x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" class="truncate">Tiket Masuk</span>
             </a>
-        @elseif(auth()->user()->hasRole('technician'))
+        @elsecan('tickets.handle')
             @php
                 $isTechTickets = request()->routeIs('technician.tickets*');
             @endphp
@@ -99,7 +99,7 @@
                 <span class="material-symbols-outlined text-[19px] {{ $isTechTickets ? 'text-emerald-500 dark:text-emerald-400 scale-105' : 'text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 group-hover:scale-110' }} transition-all duration-300">support_agent</span>
                 <span x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" class="truncate">Tiket Masuk</span>
             </a>
-        @endif
+        @endcan
 
         <!-- Proyek Link -->
         @php
@@ -115,6 +115,38 @@
             <span class="material-symbols-outlined text-[19px] {{ $isProjects ? 'text-emerald-500 dark:text-emerald-400 scale-105' : 'text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 group-hover:scale-110' }} transition-all duration-300">view_kanban</span>
             <span x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" class="truncate">Proyek</span>
         </a>
+
+        <!-- Seksi Administrasi -->
+        @canany(['users.manage', 'roles.manage'])
+            <div x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200" class="flex items-center gap-2 px-4 py-2 mt-3 mb-2">
+                <span class="text-[9px] font-bold font-mono text-zinc-400 dark:text-zinc-500 uppercase tracking-widest">Administrasi</span>
+                <div class="h-px bg-zinc-200/60 dark:bg-zinc-800/60 flex-1"></div>
+            </div>
+
+            @can('users.manage')
+                @php $isUsers = request()->routeIs('admin.users.*'); @endphp
+                <a href="{{ route('admin.users.index') }}"
+                   :title="!sidebarOpen ? 'Pengguna' : ''"
+                   :class="sidebarOpen ? 'px-4 py-2.5 justify-start gap-3' : 'lg:justify-center lg:px-0 py-2.5 px-4 justify-start gap-3'"
+                   class="relative flex items-center rounded-xl text-xs transition-all duration-300 group px-4 py-2.5 justify-start gap-3 {{ $isUsers ? 'bg-gradient-to-r from-emerald-500/10 to-teal-500/5 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/10 dark:border-emerald-500/20 shadow-sm' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-900/40 hover:text-zinc-900 dark:hover:text-zinc-100 font-semibold border border-transparent hover:translate-x-1' }}">
+                    @if($isUsers)<span class="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-gradient-to-b from-emerald-500 to-teal-400 rounded-r-md"></span>@endif
+                    <span class="material-symbols-outlined text-[19px] {{ $isUsers ? 'text-emerald-500 dark:text-emerald-400 scale-105' : 'text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 group-hover:scale-110' }} transition-all duration-300">group</span>
+                    <span x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" class="truncate">Pengguna</span>
+                </a>
+            @endcan
+
+            @can('roles.manage')
+                @php $isRoles = request()->routeIs('admin.roles.*'); @endphp
+                <a href="{{ route('admin.roles.index') }}"
+                   :title="!sidebarOpen ? 'Role & Akses' : ''"
+                   :class="sidebarOpen ? 'px-4 py-2.5 justify-start gap-3' : 'lg:justify-center lg:px-0 py-2.5 px-4 justify-start gap-3'"
+                   class="relative flex items-center rounded-xl text-xs transition-all duration-300 group px-4 py-2.5 justify-start gap-3 {{ $isRoles ? 'bg-gradient-to-r from-emerald-500/10 to-teal-500/5 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-500/10 dark:border-emerald-500/20 shadow-sm' : 'text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100/60 dark:hover:bg-zinc-900/40 hover:text-zinc-900 dark:hover:text-zinc-100 font-semibold border border-transparent hover:translate-x-1' }}">
+                    @if($isRoles)<span class="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-gradient-to-b from-emerald-500 to-teal-400 rounded-r-md"></span>@endif
+                    <span class="material-symbols-outlined text-[19px] {{ $isRoles ? 'text-emerald-500 dark:text-emerald-400 scale-105' : 'text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 group-hover:scale-110' }} transition-all duration-300">admin_panel_settings</span>
+                    <span x-show="sidebarOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-x-2" x-transition:enter-end="opacity-100 translate-x-0" class="truncate">Role &amp; Akses</span>
+                </a>
+            @endcan
+        @endcanany
     </nav>
 </aside>
 
