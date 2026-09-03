@@ -1,191 +1,239 @@
 <x-app-layout>
-    <div class="py-8 bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 min-h-screen transition-colors duration-300">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="w-full space-y-6">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-indigo-600/30 dark:hover:border-indigo-500/40 transition-all duration-350 shadow-sm hover:shadow-md">
+        <!-- Header Title Row -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Dashboard</h1>
+                <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">Pantau perkembangan proyek website, penanganan tiket teknis, dan performa SLA layanan.</p>
+            </div>
+            <div class="flex items-center gap-2.5">
+                @can('tickets.create')
+                    <a href="{{ route('tickets.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white text-xs font-bold transition-all duration-200 shadow-sm hover:shadow active:scale-95">
+                        <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                        <span>Buat Tiket Baru</span>
+                    </a>
+                @endcan
+                <a href="{{ route('projects.index') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition-all duration-200 shadow-xs">
+                    <span class="material-symbols-outlined text-[18px]">view_kanban</span>
+                    <span>Lihat Proyek</span>
+                </a>
+            </div>
+        </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
                     <div class="flex justify-between items-start">
                         <div>
-                            <p class="text-zinc-500 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wider">Proyek Aktif</p>
-                            <h4 class="text-3xl font-bold text-zinc-900 dark:text-white mt-2">{{ $stats['active_projects'] }}</h4>
+                            <p class="text-zinc-400 dark:text-zinc-500 text-[11px] font-mono font-bold uppercase tracking-wider">Proyek Aktif</p>
+                            <h4 class="text-2xl font-black text-zinc-900 dark:text-white mt-1">{{ $stats['active_projects'] }}</h4>
                         </div>
-                        <div class="p-2 bg-zinc-100 dark:bg-zinc-950 rounded-lg text-indigo-600 dark:text-indigo-400">
-                            <span class="material-symbols-outlined">work</span>
+                        <div class="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-emerald-600 dark:text-emerald-400">
+                            <span class="material-symbols-outlined text-[20px]">view_kanban</span>
                         </div>
                     </div>
-                    <div class="mt-4 flex items-center text-xs {{ $stats['projects_trend']['positive'] ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
+                    <div class="mt-3 flex items-center text-xs {{ $stats['projects_trend']['positive'] ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-rose-600 dark:text-rose-400' }}">
                         <span class="material-symbols-outlined text-sm mr-1">{{ $stats['projects_trend']['positive'] ? 'trending_up' : 'trending_down' }}</span>
                         {{ $stats['projects_trend']['label'] }}
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-indigo-600/30 dark:hover:border-indigo-500/40 transition-all duration-350 shadow-sm hover:shadow-md">
+                <div class="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
                     <div class="flex justify-between items-start">
                         <div>
-                            <p class="text-zinc-500 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wider">Tiket Terbuka</p>
-                            <h4 class="text-3xl font-bold text-zinc-900 dark:text-white mt-2">{{ $stats['open_tickets'] }}</h4>
+                            <p class="text-zinc-400 dark:text-zinc-500 text-[11px] font-mono font-bold uppercase tracking-wider">Tiket Terbuka</p>
+                            <h4 class="text-2xl font-black text-amber-600 dark:text-amber-400 mt-1">{{ $stats['open_tickets'] }}</h4>
                         </div>
-                        <div class="p-2 bg-zinc-100 dark:bg-zinc-950 rounded-lg text-amber-500">
-                            <span class="material-symbols-outlined">confirmation_number</span>
+                        <div class="p-2 bg-amber-50 dark:bg-amber-950/40 rounded-lg text-amber-600">
+                            <span class="material-symbols-outlined text-[20px]">confirmation_number</span>
                         </div>
                     </div>
-                    <div class="mt-4 flex items-center text-xs text-rose-600 dark:text-rose-400">
+                    <div class="mt-3 flex items-center text-xs text-rose-600 dark:text-rose-400">
                         @if($stats['sla_warning_count'] > 0)
                             <span class="material-symbols-outlined text-sm mr-1">warning</span>
-                            {{ $stats['sla_warning_count'] }} tiket mendekati SLA
+                            <span class="font-bold">{{ $stats['sla_warning_count'] }} tiket mendekati SLA</span>
                         @else
                             <span class="material-symbols-outlined text-sm mr-1 text-emerald-500">check_circle</span>
-                            <span class="text-emerald-600 dark:text-emerald-400">Tidak ada peringatan SLA</span>
+                            <span class="text-emerald-600 dark:text-emerald-400 font-medium">SLA Terkendali</span>
                         @endif
                     </div>
                 </div>
 
-                <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-indigo-600/30 dark:hover:border-indigo-500/40 transition-all duration-350 shadow-sm hover:shadow-md">
+                <div class="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
                     <div class="flex justify-between items-start">
                         <div>
-                            <p class="text-zinc-500 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wider">SLA Compliance</p>
-                            <h4 class="text-3xl font-bold text-zinc-900 dark:text-white mt-2">{{ $stats['sla_compliance_percent'] }}%</h4>
+                            <p class="text-zinc-400 dark:text-zinc-500 text-[11px] font-mono font-bold uppercase tracking-wider">SLA Compliance</p>
+                            <h4 class="text-2xl font-black text-zinc-900 dark:text-white mt-1">{{ $stats['sla_compliance_percent'] }}%</h4>
                         </div>
-                        <div class="p-2 bg-zinc-100 dark:bg-zinc-950 rounded-lg text-emerald-500">
-                            <span class="material-symbols-outlined">verified</span>
+                        <div class="p-2 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg text-emerald-600">
+                            <span class="material-symbols-outlined text-[20px]">verified</span>
                         </div>
                     </div>
-                    <div class="mt-4 w-full bg-zinc-100 dark:bg-zinc-950 h-2 rounded-full overflow-hidden">
-                        <div class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: {{ $stats['sla_compliance_percent'] }}%"></div>
+                    <div class="mt-3 w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-emerald-600 h-1.5 rounded-full transition-all duration-500" style="width: {{ $stats['sla_compliance_percent'] }}%"></div>
                     </div>
                     @if($stats['sla_tracked_count'] > 0)
-                        <p class="mt-2 text-xs text-zinc-500 dark:text-zinc-400">{{ $stats['sla_tracked_count'] }} tiket dengan SLA aktif</p>
+                        <p class="mt-1.5 text-[10px] font-mono text-zinc-400 dark:text-zinc-500">{{ $stats['sla_tracked_count'] }} tiket SLA aktif</p>
                     @endif
                 </div>
 
-                <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-indigo-600/30 dark:hover:border-indigo-500/40 transition-all duration-350 shadow-sm hover:shadow-md">
+                <div class="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
                     <div class="flex justify-between items-start">
                         <div>
-                            <p class="text-zinc-500 dark:text-zinc-400 text-xs font-semibold uppercase tracking-wider">Total Tiket</p>
-                            <h4 class="text-3xl font-bold text-zinc-900 dark:text-white mt-2">{{ $stats['total_tickets'] }}</h4>
+                            <p class="text-zinc-400 dark:text-zinc-500 text-[11px] font-mono font-bold uppercase tracking-wider">Total Tiket</p>
+                            <h4 class="text-2xl font-black text-zinc-900 dark:text-white mt-1">{{ $stats['total_tickets'] }}</h4>
                         </div>
-                        <div class="p-2 bg-zinc-100 dark:bg-zinc-950 rounded-lg text-emerald-500">
-                            <span class="material-symbols-outlined">inventory_2</span>
+                        <div class="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-zinc-600 dark:text-zinc-300">
+                            <span class="material-symbols-outlined text-[20px]">inventory_2</span>
                         </div>
                     </div>
-                    <div class="mt-4 text-xs text-zinc-500 dark:text-zinc-400">Semua tiket dalam ruang lingkup Anda</div>
+                    <div class="mt-3 text-[11px] text-zinc-400">Total riwayat layanan</div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-1 bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                    <h4 class="text-zinc-800 dark:text-zinc-200 font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">pie_chart</span> Tiket Per Status
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="lg:col-span-1 bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
+                    <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-1 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-600 text-[18px]">pie_chart</span>
+                        <span>Tiket Per Status</span>
                     </h4>
-                    <p class="text-xs text-zinc-400 dark:text-zinc-500 mb-4">Distribusi dari database</p>
-                    <div class="relative h-64 flex items-center justify-center">
+                    <p class="text-[11px] text-zinc-400 mb-3">Distribusi status tiket</p>
+                    <div class="relative h-60 flex items-center justify-center">
                         <canvas id="ticketsChart"></canvas>
                     </div>
                 </div>
 
-                <div class="lg:col-span-1 bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                    <h4 class="text-zinc-800 dark:text-zinc-200 font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">donut_large</span> Tugas Tim
+                <div class="lg:col-span-1 bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
+                    <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-1 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-600 text-[18px]">donut_large</span>
+                        <span>Tugas Tim</span>
                     </h4>
-                    <p class="text-xs text-zinc-400 dark:text-zinc-500 mb-4">Status tugas proyek</p>
-                    <div class="relative h-64 flex items-center justify-center">
+                    <p class="text-[11px] text-zinc-400 mb-3">Status tugas proyek</p>
+                    <div class="relative h-60 flex items-center justify-center">
                         <canvas id="tasksChart"></canvas>
                     </div>
                 </div>
 
-                <div class="lg:col-span-1 bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                    <h4 class="text-zinc-800 dark:text-zinc-200 font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400">bar_chart</span> Status Proyek
+                <div class="lg:col-span-1 bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
+                    <h4 class="text-zinc-900 dark:text-white font-bold text-sm mb-1 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-600 text-[18px]">bar_chart</span>
+                        <span>Status Proyek</span>
                     </h4>
-                    <p class="text-xs text-zinc-400 dark:text-zinc-500 mb-4">Agregasi status proyek</p>
-                    <div class="relative h-64">
+                    <p class="text-[11px] text-zinc-400 mb-3">Agregasi status proyek</p>
+                    <div class="relative h-60">
                         <canvas id="projectsChart"></canvas>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                    <h4 class="text-zinc-800 dark:text-zinc-200 font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-amber-500">priority_high</span> Tiket Per Prioritas
-                    </h4>
-                    <p class="text-xs text-zinc-400 dark:text-zinc-500 mb-4">Pie chart prioritas tiket</p>
-                    <div class="relative h-72">
-                        <canvas id="priorityChart"></canvas>
-                    </div>
+            <!-- Recent Activity Card (Desktop Table + Mobile Cards) -->
+            <div class="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs overflow-hidden">
+                <div class="p-4 sm:p-5 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center">
+                    <h4 class="text-zinc-900 dark:text-white font-bold text-sm">Aktivitas Terkini</h4>
+                    <a href="{{ route('projects.index') }}" class="text-xs text-emerald-600 hover:underline font-bold">Lihat Proyek</a>
                 </div>
 
-                <div class="bg-white dark:bg-zinc-900 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                    <h4 class="text-zinc-800 dark:text-zinc-200 font-bold mb-2 flex items-center gap-2">
-                        <span class="material-symbols-outlined text-emerald-500">show_chart</span> Tiket Baru (6 Bulan)
-                    </h4>
-                    <p class="text-xs text-zinc-400 dark:text-zinc-500 mb-4">Tren pembuatan tiket dari database</p>
-                    <div class="relative h-72">
-                        <canvas id="monthlyChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
-                <div class="p-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
-                    <h4 class="text-zinc-900 dark:text-white font-bold">Aktivitas Terkini</h4>
-                    <a href="{{ route('projects.index') }}" class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-semibold">Lihat Proyek</a>
-                </div>
-                <div class="overflow-x-auto">
+                <!-- Desktop Table (md:block) -->
+                <div class="hidden md:block overflow-x-auto">
                     <table class="w-full text-left text-sm text-zinc-700 dark:text-zinc-300">
                         <thead>
-                            <tr class="text-zinc-400 dark:text-zinc-500 uppercase text-[10px] tracking-widest">
-                                <th class="px-6 py-4">Proyek/Tiket</th>
-                                <th class="px-6 py-4">Assignee</th>
-                                <th class="px-6 py-4">Status</th>
-                                <th class="px-6 py-4">Waktu</th>
+                            <tr class="bg-zinc-50/70 dark:bg-zinc-950/50 border-b border-zinc-200/80 dark:border-zinc-800 text-zinc-400 dark:text-zinc-500 font-mono uppercase text-[10px] tracking-wider">
+                                <th class="px-5 py-3">Proyek / Tiket</th>
+                                <th class="px-5 py-3">Assignee</th>
+                                <th class="px-5 py-3">Status</th>
+                                <th class="px-5 py-3 text-right">Waktu</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="divide-y divide-zinc-100 dark:divide-zinc-800/60 text-xs">
                             @forelse($recent_activity as $row)
                                 @php
                                     $statusColors = [
-                                        'open' => 'bg-sky-50 dark:bg-sky-950/30 text-sky-600 dark:text-sky-400 border border-sky-100 dark:border-sky-900/30',
-                                        'pending' => 'bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30',
-                                        'resolved' => 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30',
-                                        'closed' => 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700/50',
-                                        'active' => 'bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/30',
-                                        'completed' => 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30',
-                                        'todo' => 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700/50',
-                                        'in_progress' => 'bg-amber-50 dark:bg-amber-950/30 text-amber-600 dark:text-amber-400 border border-amber-100 dark:border-amber-900/30',
-                                        'done' => 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30',
+                                        'open' => 'bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200/50',
+                                        'pending' => 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200/50',
+                                        'resolved' => 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200/50',
+                                        'closed' => 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
+                                        'active' => 'bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200/50',
+                                        'completed' => 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200/50',
+                                        'todo' => 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
+                                        'in_progress' => 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200/50',
+                                        'done' => 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200/50',
                                     ];
-                                    $badgeClass = $statusColors[$row['status']] ?? 'bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900/30';
+                                    $badgeClass = $statusColors[$row['status']] ?? 'bg-zinc-100 text-zinc-700';
                                 @endphp
-                                <tr class="border-t border-zinc-200 dark:border-zinc-800/60 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors">
-                                    <td class="px-6 py-4 font-medium text-zinc-900 dark:text-zinc-100">
+                                <tr class="hover:bg-zinc-50/80 dark:hover:bg-zinc-800/30 transition-colors">
+                                    <td class="px-5 py-3 font-medium text-zinc-900 dark:text-zinc-100">
                                         @if($row['url'])
-                                            <a href="{{ $row['url'] }}" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{{ $row['title'] }}</a>
+                                            <a href="{{ $row['url'] }}" class="hover:text-emerald-600 transition-colors font-bold">{{ $row['title'] }}</a>
                                         @else
-                                            {{ $row['title'] }}
+                                            <span class="font-bold">{{ $row['title'] }}</span>
                                         @endif
-                                        <span class="ml-2 text-[10px] text-zinc-400 dark:text-zinc-500 uppercase font-mono">{{ $row['type'] }}</span>
+                                        <span class="ml-2 text-[10px] text-zinc-400 uppercase font-mono">{{ $row['type'] }}</span>
                                     </td>
-                                    <td class="px-6 py-4">{{ $row['assignee'] }}</td>
-                                    <td class="px-6 py-4">
-                                        <span class="px-2.5 py-1 rounded-md {{ $badgeClass }} text-[10px] font-bold uppercase tracking-wider">{{ $row['status_label'] }}</span>
+                                    <td class="px-5 py-3">{{ $row['assignee'] }}</td>
+                                    <td class="px-5 py-3">
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $badgeClass }}">{{ $row['status_label'] }}</span>
                                     </td>
-                                    <td class="px-6 py-4 text-zinc-500 dark:text-zinc-400">{{ $row['time_ago'] }}</td>
+                                    <td class="px-5 py-3 text-right text-zinc-400 font-mono text-[11px]">{{ $row['time_ago'] }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="px-6 py-12 text-center text-zinc-400 dark:text-zinc-500">
-                                        Belum ada aktivitas. Data akan muncul setelah tiket atau proyek dibuat.
+                                    <td colspan="4" class="px-5 py-8 text-center text-zinc-400 text-xs">
+                                        Belum ada aktivitas baru.
                                     </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
-            </div>
 
+                <!-- Mobile Cards (md:hidden) -->
+                <div class="md:hidden divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                    @forelse($recent_activity as $row)
+                        @php
+                            $statusColors = [
+                                'open' => 'bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200/50',
+                                'pending' => 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200/50',
+                                'resolved' => 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200/50',
+                                'closed' => 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
+                                'active' => 'bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border border-sky-200/50',
+                                'completed' => 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200/50',
+                                'todo' => 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300',
+                                'in_progress' => 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border border-amber-200/50',
+                                'done' => 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200/50',
+                            ];
+                            $badgeClass = $statusColors[$row['status']] ?? 'bg-zinc-100 text-zinc-700';
+                        @endphp
+                        <div class="p-4 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $badgeClass }}">
+                                    {{ $row['status_label'] }}
+                                </span>
+                                <span class="font-mono text-[10px] text-zinc-400">{{ $row['time_ago'] }}</span>
+                            </div>
+
+                            <div>
+                                @if($row['url'])
+                                    <a href="{{ $row['url'] }}" class="font-bold text-xs text-zinc-900 dark:text-white hover:text-emerald-600">
+                                        {{ $row['title'] }}
+                                    </a>
+                                @else
+                                    <span class="font-bold text-xs text-zinc-900 dark:text-white">{{ $row['title'] }}</span>
+                                @endif
+                                <span class="ml-1 text-[10px] font-mono text-zinc-400 uppercase">({{ $row['type'] }})</span>
+                            </div>
+
+                            <div class="text-[11px] text-zinc-500 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
+                                Assignee: <span class="font-semibold text-zinc-700 dark:text-zinc-300">{{ $row['assignee'] }}</span>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="p-6 text-center text-zinc-400 text-xs">
+                            Belum ada aktivitas baru.
+                        </div>
+                    @endforelse
+                </div>
+            </div>
         </div>
-    </div>
 
     @push('scripts')
     <script id="dashboard-data" type="application/json">
@@ -193,3 +241,4 @@
     </script>
     @endpush
 </x-app-layout>
+

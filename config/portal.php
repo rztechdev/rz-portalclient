@@ -15,8 +15,8 @@ return [
     */
 
     'admin' => [
-        'name' => env('ADMIN_NAME', 'Administrator'),
-        'email' => env('ADMIN_EMAIL', 'rztechdevidn@gmail.com'),
+        'name' => env('ADMIN_NAME', 'Owner RZ Digital'),
+        'email' => env('ADMIN_EMAIL', 'rzcompanyidn@gmail.com'),
         'password' => env('ADMIN_PASSWORD', '12345678'),
     ],
 

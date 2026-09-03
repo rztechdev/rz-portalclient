@@ -1,117 +1,135 @@
-<x-app-layout>
+﻿<x-app-layout>
+    <div class="w-full space-y-6">
 
-            @can('create', App\Models\Project::class)
-            <a href="{{ route('projects.create') }}"
-               class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg transition">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Buat Proyek
-            </a>
-            @endcan
-
-
-    <div class="py-10">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Header & Actions -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Daftar Proyek</h1>
+                    <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">Kelola dan pantau progress pengerjaan seluruh proyek website &amp; digital Anda.</p>
+                </div>
+                @can('create', App\Models\Project::class)
+                    <a href="{{ route('projects.create') }}"
+                       class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs hover:shadow active:scale-95">
+                        <span class="material-symbols-outlined text-[18px]">add_circle</span>
+                        <span>Buat Proyek Baru</span>
+                    </a>
+                @endcan
+            </div>
 
             @if(session('success'))
-                <div class="mb-6 bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg">
-                    {{ session('success') }}
+                <div class="p-4 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/50 text-emerald-800 dark:text-emerald-300 rounded-xl flex items-start gap-3 shadow-xs">
+                    <span class="material-symbols-outlined text-[20px] text-emerald-600 dark:text-emerald-400 shrink-0">check_circle</span>
+                    <div>
+                        <span class="font-bold text-xs">Berhasil!</span>
+                        <p class="text-xs mt-0.5">{{ session('success') }}</p>
+                    </div>
                 </div>
             @endif
 
-            {{-- Stats --}}
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            {{-- Stats Grid --}}
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 @php
-                    $statuses = ['pending' => ['label'=>'Pending','color'=>'yellow'], 'active' => ['label'=>'Aktif','color'=>'blue'], 'completed' => ['label'=>'Selesai','color'=>'green'], 'archived' => ['label'=>'Arsip','color'=>'gray']];
+                    $statuses = [
+                        'pending' => ['label'=>'Pending', 'badge'=>'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-200/50'],
+                        'active' => ['label'=>'Aktif', 'badge'=>'bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400 border border-sky-200/50'],
+                        'completed' => ['label'=>'Selesai', 'badge'=>'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200/50'],
+                        'archived' => ['label'=>'Arsip', 'badge'=>'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 border border-zinc-200/50']
+                    ];
                 @endphp
                 @foreach($statuses as $key => $s)
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4 flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-{{ $s['color'] }}-100 dark:bg-{{ $s['color'] }}-900 flex items-center justify-center">
-                        <span class="text-{{ $s['color'] }}-600 dark:text-{{ $s['color'] }}-300 font-bold text-sm">
-                            {{ $projects->where('status', $key)->count() }}
+                    <div class="bg-white dark:bg-zinc-900 rounded-xl p-4 border border-zinc-200/80 dark:border-zinc-800 shadow-xs flex items-center justify-between">
+                        <div>
+                            <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">{{ $s['label'] }}</span>
+                            <div class="text-2xl font-black text-zinc-900 dark:text-white mt-0.5">
+                                {{ $projects->where('status', $key)->count() }}
+                            </div>
+                        </div>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider {{ $s['badge'] }}">
+                            {{ $s['label'] }}
                         </span>
                     </div>
-                    <span class="text-gray-600 dark:text-gray-400 text-sm font-medium">{{ $s['label'] }}</span>
-                </div>
                 @endforeach
             </div>
 
             {{-- Project Grid --}}
             @if($projects->isEmpty())
-                <div class="text-center py-20 text-gray-500 dark:text-gray-400">
-                    <svg class="mx-auto w-16 h-16 mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
-                    <p class="text-lg font-medium">Belum ada proyek</p>
-                    <p class="text-sm mt-1">Mulai dengan membuat proyek baru</p>
+                <div class="text-center py-16 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800 p-6">
+                    <div class="inline-flex p-3 bg-zinc-100 dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 rounded-xl mb-3">
+                        <span class="material-symbols-outlined text-[32px]">folder_off</span>
+                    </div>
+                    <p class="text-sm font-bold text-zinc-700 dark:text-zinc-300">Belum ada proyek</p>
+                    <p class="text-xs text-zinc-400 mt-1">Mulai dengan membuat proyek baru atau menghubungkan tiket layanan.</p>
                 </div>
             @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach($projects as $project)
-                @php
-                    $total = $project->tasks->count();
-                    $done  = $project->tasks->where('status','done')->count();
-                    $pct   = $total > 0 ? round($done / $total * 100) : 0;
-                    $statusColors = ['pending'=>'yellow','active'=>'blue','completed'=>'green','archived'=>'gray'];
-                    $color = $statusColors[$project->status] ?? 'gray';
-                @endphp
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col overflow-hidden group">
-                    <div class="h-2 bg-gradient-to-r from-indigo-500 to-purple-500 group-hover:from-purple-500 group-hover:to-indigo-500 transition-all duration-500"></div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <div class="flex items-start justify-between mb-3">
-                            <h3 class="font-bold text-gray-900 dark:text-white text-lg leading-tight">{{ $project->name }}</h3>
-                            <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-{{ $color }}-100 text-{{ $color }}-800 dark:bg-{{ $color }}-900 dark:text-{{ $color }}-200 shrink-0">
-                                {{ ucfirst($project->status) }}
-                            </span>
-                        </div>
-                        <p class="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-2">{{ $project->description ?? 'Tidak ada deskripsi.' }}</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach($projects as $project)
+                        @php
+                            $total = $project->tasks->count();
+                            $done  = $project->tasks->where('status','done')->count();
+                            $pct   = $total > 0 ? round($done / $total * 100) : 0;
+                            $statusBadges = [
+                                'pending' => 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-200/50',
+                                'active' => 'bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400 border border-sky-200/50',
+                                'completed' => 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200/50',
+                                'archived' => 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400',
+                            ];
+                        @endphp
+                        <div class="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs flex flex-col p-5 space-y-4 hover:border-emerald-500/50 transition-colors">
+                            <div class="flex items-start justify-between gap-2">
+                                <div>
+                                    <h3 class="font-bold text-sm text-zinc-900 dark:text-white leading-snug">{{ $project->name }}</h3>
+                                    <p class="text-xs text-zinc-400 line-clamp-2 mt-1">{{ $project->description ?? 'Tidak ada deskripsi.' }}</p>
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider shrink-0 {{ $statusBadges[$project->status] ?? 'bg-zinc-100 text-zinc-600' }}">
+                                    {{ ucfirst($project->status) }}
+                                </span>
+                            </div>
 
-                        {{-- Progress --}}
-                        <div class="mb-4">
-                            <div class="flex justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
-                                <span>Progress</span>
-                                <span>{{ $done }}/{{ $total }} tugas ({{ $pct }}%)</span>
+                            {{-- Progress Bar --}}
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
+                                    <span>Progress Tugas</span>
+                                    <span class="font-mono font-bold">{{ $done }}/{{ $total }} ({{ $pct }}%)</span>
+                                </div>
+                                <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
+                                    <div class="bg-emerald-600 h-1.5 rounded-full transition-all duration-500" style="width: {{ $pct }}%"></div>
+                                </div>
                             </div>
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                <div class="bg-indigo-500 h-2 rounded-full transition-all duration-500" style="width: {{ $pct }}%"></div>
-                            </div>
-                        </div>
 
-                        <div class="text-xs text-gray-500 dark:text-gray-400 space-y-1 mb-4">
-                            <div class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                                Client: {{ $project->client->name }}
+                            {{-- Details --}}
+                            <div class="text-xs text-zinc-500 dark:text-zinc-400 space-y-1 pt-2 border-t border-zinc-100 dark:border-zinc-800/80">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-[15px] text-zinc-400">person</span>
+                                    <span>Klien: <b>{{ $project->client->name }}</b></span>
+                                </div>
+                                @if($project->ticket)
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[15px] text-emerald-600">confirmation_number</span>
+                                        <span>Tiket: #{{ str_pad($project->ticket->id, 5, '0', STR_PAD_LEFT) }}</span>
+                                    </div>
+                                @endif
+                                @if($project->end_date)
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[15px] text-zinc-400">event</span>
+                                        <span>Deadline: {{ \Carbon\Carbon::parse($project->end_date)->format('d M Y') }}</span>
+                                    </div>
+                                @endif
                             </div>
-                            @if($project->ticket)
-                            <div class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
-                                Tiket: #{{ str_pad($project->ticket->id, 5, '0', STR_PAD_LEFT) }}
-                            </div>
-                            @endif
-                            @if($project->end_date)
-                            <div class="flex items-center gap-1">
-                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                Deadline: {{ \Carbon\Carbon::parse($project->end_date)->format('d M Y') }}
-                            </div>
-                            @endif
-                        </div>
 
-                        <div class="mt-auto flex gap-2">
-                            <a href="{{ route('projects.show', $project) }}"
-                               class="flex-1 text-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-2 px-4 rounded-lg transition">
-                                Lihat Detail
-                            </a>
-                            @can('update', $project)
-                            <a href="{{ route('projects.edit', $project) }}"
-                               class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 text-sm font-medium py-2 px-3 rounded-lg transition">
-                                Edit
-                            </a>
-                            @endcan
+                            <div class="pt-2 mt-auto">
+                                <a href="{{ route('projects.show', $project) }}"
+                                   class="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-zinc-100 dark:bg-zinc-800 hover:bg-emerald-600 hover:text-white dark:hover:bg-emerald-600 dark:hover:text-white text-xs font-bold text-zinc-800 dark:text-zinc-200 transition-colors">
+                                    <span>Buka Detail Proyek</span>
+                                    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-                @endforeach
-            </div>
-
-            <div class="mt-8">{{ $projects->links() }}</div>
+                <div class="mt-8">{{ $projects->links() }}</div>
             @endif
+
         </div>
-    </div>
 </x-app-layout>
+
+

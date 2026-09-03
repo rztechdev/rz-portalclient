@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <title>{{ config('app.name', 'RZ Portal') }} | Solusi Operasional Terpadu</title>
     <!-- Favicon & Brand Icons -->
     <link rel="icon" type="image/jpeg" href="{{ asset('images/logo_rz_teks.jpeg') }}">
@@ -50,7 +50,7 @@
                 <!-- Theme Switcher -->
                 <button @click="toggleTheme()" 
                         type="button"
-                        class="p-2 rounded-xl text-zinc-500 dark:text-zinc-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-900/50 transition-colors focus:outline-none cursor-pointer"
+                        class="p-2 rounded-xl text-zinc-500 dark:text-zinc-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-zinc-200/50 dark:hover:bg-zinc-900/50 transition-colors focus:outline-none cursor-pointer"
                         title="Ganti Tema">
                     <span class="material-symbols-outlined text-[20px] sm:text-[22px] block text-zinc-600 dark:text-zinc-400" x-show="!darkMode">dark_mode</span>
                     <span class="material-symbols-outlined text-[20px] sm:text-[22px] block text-amber-400" x-show="darkMode" style="display: none;">light_mode</span>
@@ -59,7 +59,7 @@
                 <!-- Auth Buttons -->
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition-all shadow-sm shadow-indigo-600/10">
+                        <a href="{{ url('/dashboard') }}" class="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-all shadow-sm shadow-emerald-600/10">
                             Dasbor
                         </a>
                     @else
@@ -67,7 +67,7 @@
                             Masuk
                         </a>
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="px-3 py-1.5 text-xs sm:text-sm font-semibold border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 hover:border-indigo-600/30 dark:hover:border-indigo-500/40 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-900/50 transition-all">
+                            <a href="{{ route('register') }}" class="px-3 py-1.5 text-xs sm:text-sm font-semibold border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-200 hover:border-emerald-600/30 dark:hover:border-emerald-500/40 rounded-xl hover:bg-zinc-100 dark:hover:bg-zinc-900/50 transition-all">
                                 Daftar
                             </a>
                         @endif
@@ -82,15 +82,15 @@
             <!-- Left Side (Typography and details) -->
             <div class="lg:col-span-6 space-y-5 sm:space-y-6 text-left">
                 <!-- Tagline Badge -->
-                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-900 border border-zinc-250 dark:border-zinc-800 rounded-full text-[10px] sm:text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400 max-w-full">
-                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400 animate-pulse shrink-0"></span>
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-zinc-100 dark:bg-zinc-900 border border-zinc-250 dark:border-zinc-800 rounded-full text-[10px] sm:text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 max-w-full">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-pulse shrink-0"></span>
                     <span class="truncate">SISTEM MANAJEMEN OPERASIONAL TERPADU</span>
                 </div>
                 
                 <!-- Main Header -->
                 <h1 class="text-3xl sm:text-5xl lg:text-[54px] font-black text-zinc-900 dark:text-white leading-[1.15] sm:leading-[1.1] tracking-tight">
                     Orkestrasi Kerja <br class="hidden sm:inline"/>
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-indigo-500 dark:from-indigo-400 dark:to-indigo-300">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-500 dark:from-emerald-400 dark:to-emerald-300">
                         Tanpa Hambatan.
                     </span>
                 </h1>
@@ -104,12 +104,12 @@
                 <div class="flex flex-col sm:flex-row gap-3 pt-2 w-full sm:w-auto">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="w-full sm:w-auto px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-sm shadow-indigo-600/10">
+                            <a href="{{ url('/dashboard') }}" class="w-full sm:w-auto px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/10">
                                 Buka Dasbor Utama
                                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                             </a>
                         @else
-                            <a href="{{ route('login') }}" class="w-full sm:w-auto px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-sm shadow-indigo-600/10">
+                            <a href="{{ route('login') }}" class="w-full sm:w-auto px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-sm shadow-emerald-600/10">
                                 Mulai Sekarang
                                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                             </a>
@@ -156,7 +156,7 @@
                         <div class="bg-zinc-50 dark:bg-zinc-950 p-3 sm:p-4 rounded-xl border border-zinc-200/60 dark:border-zinc-800/60 shadow-sm">
                             <div class="flex justify-between items-start gap-2 mb-2">
                                 <div class="min-w-0">
-                                    <div class="text-[9px] text-indigo-600 dark:text-indigo-400 font-mono font-bold uppercase tracking-wider truncate">TKT-102 &bull; SLA Aktif</div>
+                                    <div class="text-[9px] text-emerald-600 dark:text-emerald-400 font-mono font-bold uppercase tracking-wider truncate">TKT-102 &bull; SLA Aktif</div>
                                     <div class="text-xs sm:text-sm font-bold text-zinc-850 dark:text-zinc-100 mt-0.5 truncate">Integrasi Gateway Payment</div>
                                 </div>
                                 <span class="px-2 py-0.5 bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 text-[9px] font-extrabold rounded-md border border-rose-100 dark:border-rose-900/30 shrink-0">KRITIS</span>
@@ -199,7 +199,7 @@
 
                 <!-- Backing decorative visual ornaments (Hidden on extra small screens to prevent overflow) -->
                 <div class="hidden sm:block absolute -top-8 -right-8 w-36 h-36 border border-zinc-200 dark:border-zinc-800/60 rounded-full -z-10"></div>
-                <div class="hidden sm:block absolute -bottom-10 -left-10 w-44 h-44 border border-indigo-600/10 rounded-full -z-10"></div>
+                <div class="hidden sm:block absolute -bottom-10 -left-10 w-44 h-44 border border-emerald-600/10 rounded-full -z-10"></div>
             </div>
         </section>
 
@@ -208,14 +208,14 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div class="text-center mb-10 sm:mb-16 space-y-2">
-                    <h2 class="text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400 tracking-widest uppercase">Kapasitas Sistem</h2>
+                    <h2 class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-widest uppercase">Kapasitas Sistem</h2>
                     <h3 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Keunggulan RZ Portal</h3>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Feature Card 1 -->
-                    <div class="bg-white dark:bg-zinc-900 p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-indigo-600/30 dark:hover:border-indigo-500/40 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md">
-                        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-5 sm:mb-6">
+                    <div class="bg-white dark:bg-zinc-900 p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-emerald-600/30 dark:hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md">
+                        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-5 sm:mb-6">
                             <span class="material-symbols-outlined text-[22px] sm:text-[24px]">dashboard_customize</span>
                         </div>
                         <h4 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mb-2 sm:mb-3">Manajemen Terpusat</h4>
@@ -225,9 +225,9 @@
                     </div>
 
                     <!-- Feature Card 2 (Highlight variant) -->
-                    <div class="bg-white dark:bg-zinc-900 p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-indigo-600/30 dark:hover:border-indigo-500/40 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-24 h-24 sm:w-28 sm:h-28 bg-indigo-600/5 rounded-full blur-xl"></div>
-                        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-5 sm:mb-6 relative z-10">
+                    <div class="bg-white dark:bg-zinc-900 p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-emerald-600/30 dark:hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-24 h-24 sm:w-28 sm:h-28 bg-emerald-600/5 rounded-full blur-xl"></div>
+                        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-5 sm:mb-6 relative z-10">
                             <span class="material-symbols-outlined text-[22px] sm:text-[24px]">monitoring</span>
                         </div>
                         <h4 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mb-2 sm:mb-3 relative z-10">Pemantauan Otomatis</h4>
@@ -237,8 +237,8 @@
                     </div>
 
                     <!-- Feature Card 3 -->
-                    <div class="bg-white dark:bg-zinc-900 p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-indigo-600/30 dark:hover:border-indigo-500/40 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md">
-                        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-5 sm:mb-6">
+                    <div class="bg-white dark:bg-zinc-900 p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 hover:border-emerald-600/30 dark:hover:border-emerald-500/40 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md">
+                        <div class="w-11 h-11 sm:w-12 sm:h-12 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-5 sm:mb-6">
                             <span class="material-symbols-outlined text-[22px] sm:text-[24px]">rule_folder</span>
                         </div>
                         <h4 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mb-2 sm:mb-3">Standarisasi Layanan</h4>
@@ -255,7 +255,7 @@
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div class="text-center mb-10 sm:mb-12">
-                    <h2 class="text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400 tracking-widest uppercase mb-2">Keamanan & Kejelasan Tanggung Jawab</h2>
+                    <h2 class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 tracking-widest uppercase mb-2">Keamanan & Kejelasan Tanggung Jawab</h2>
                     <h3 class="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-white tracking-tight">Hak Akses Berbasis Peran (RBAC)</h3>
                     <p class="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-2 max-w-lg mx-auto">Sistem keamanan operasional multi-level untuk membagi tanggung jawab kerja dan menjaga integritas data.</p>
                 </div>
@@ -267,7 +267,7 @@
                     <div class="md:col-span-4 flex flex-row md:flex-col gap-2 overflow-x-auto no-scrollbar pb-3 md:pb-0 scroll-smooth -mx-4 px-4 md:mx-0 md:px-0">
                         <!-- PM Tab -->
                         <button @click="activeRole = 'pm'"
-                                :class="activeRole === 'pm' ? 'bg-indigo-50/80 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 border-indigo-500 font-bold' : 'bg-transparent text-zinc-500 hover:bg-zinc-150 dark:hover:bg-zinc-900/50 border-transparent'"
+                                :class="activeRole === 'pm' ? 'bg-emerald-50/80 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border-emerald-500 font-bold' : 'bg-transparent text-zinc-500 hover:bg-zinc-150 dark:hover:bg-zinc-900/50 border-transparent'"
                                 class="flex items-center gap-2.5 px-4 py-3 rounded-xl border-l-2 text-xs sm:text-sm text-left transition-all shrink-0">
                             <span class="material-symbols-outlined text-[18px] sm:text-[20px] shrink-0">manage_accounts</span>
                             <span>Project Manager</span>
@@ -275,7 +275,7 @@
                         
                         <!-- Technician Tab -->
                         <button @click="activeRole = 'tech'"
-                                :class="activeRole === 'tech' ? 'bg-indigo-50/80 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 border-indigo-500 font-bold' : 'bg-transparent text-zinc-500 hover:bg-zinc-150 dark:hover:bg-zinc-900/50 border-transparent'"
+                                :class="activeRole === 'tech' ? 'bg-emerald-50/80 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border-emerald-500 font-bold' : 'bg-transparent text-zinc-500 hover:bg-zinc-150 dark:hover:bg-zinc-900/50 border-transparent'"
                                 class="flex items-center gap-2.5 px-4 py-3 rounded-xl border-l-2 text-xs sm:text-sm text-left transition-all shrink-0">
                             <span class="material-symbols-outlined text-[18px] sm:text-[20px] shrink-0">terminal</span>
                             <span>Tim Teknis</span>
@@ -283,7 +283,7 @@
 
                         <!-- Client Tab -->
                         <button @click="activeRole = 'client'"
-                                :class="activeRole === 'client' ? 'bg-indigo-50/80 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 border-indigo-500 font-bold' : 'bg-transparent text-zinc-500 hover:bg-zinc-150 dark:hover:bg-zinc-900/50 border-transparent'"
+                                :class="activeRole === 'client' ? 'bg-emerald-50/80 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border-emerald-500 font-bold' : 'bg-transparent text-zinc-500 hover:bg-zinc-150 dark:hover:bg-zinc-900/50 border-transparent'"
                                 class="flex items-center gap-2.5 px-4 py-3 rounded-xl border-l-2 text-xs sm:text-sm text-left transition-all shrink-0">
                             <span class="material-symbols-outlined text-[18px] sm:text-[20px] shrink-0">support_agent</span>
                             <span>Klien / Pelapor</span>
@@ -291,7 +291,7 @@
 
                         <!-- CEO Tab -->
                         <button @click="activeRole = 'ceo'"
-                                :class="activeRole === 'ceo' ? 'bg-indigo-50/80 dark:bg-indigo-950/20 text-indigo-600 dark:text-indigo-400 border-indigo-500 font-bold' : 'bg-transparent text-zinc-500 hover:bg-zinc-150 dark:hover:bg-zinc-900/50 border-transparent'"
+                                :class="activeRole === 'ceo' ? 'bg-emerald-50/80 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border-emerald-500 font-bold' : 'bg-transparent text-zinc-500 hover:bg-zinc-150 dark:hover:bg-zinc-900/50 border-transparent'"
                                 class="flex items-center gap-2.5 px-4 py-3 rounded-xl border-l-2 text-xs sm:text-sm text-left transition-all shrink-0">
                             <span class="material-symbols-outlined text-[18px] sm:text-[20px] shrink-0">corporate_fare</span>
                             <span>CEO / Direktur</span>
@@ -304,7 +304,7 @@
                         <!-- Content: PM -->
                         <div x-show="activeRole === 'pm'" class="space-y-3 sm:space-y-4" x-transition:enter="transition ease-out duration-200">
                             <div class="flex items-center gap-2.5">
-                                <span class="p-2 rounded-lg bg-indigo-50 dark:bg-indigo-950/30 text-indigo-600 dark:text-indigo-400 shrink-0">
+                                <span class="p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 shrink-0">
                                     <span class="material-symbols-outlined text-[20px] sm:text-[22px] block">manage_accounts</span>
                                 </span>
                                 <h4 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white">Project Manager (Pusat Kontrol)</h4>
@@ -314,19 +314,19 @@
                             </p>
                             <div class="pt-3.5 border-t border-zinc-100 dark:border-zinc-800/60 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                                 <div class="flex items-center gap-2 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-350">
-                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-[16px] sm:text-[18px] shrink-0">check_box</span>
+                                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-[16px] sm:text-[18px] shrink-0">check_box</span>
                                     <span class="truncate">Mendelegasikan tiket ke tim teknis</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-350">
-                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-[16px] sm:text-[18px] shrink-0">check_box</span>
+                                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-[16px] sm:text-[18px] shrink-0">check_box</span>
                                     <span class="truncate">Mengontrol & membuat proyek baru</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-350">
-                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-[16px] sm:text-[18px] shrink-0">check_box</span>
+                                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-[16px] sm:text-[18px] shrink-0">check_box</span>
                                     <span class="truncate">Melacak KPI kepatuhan SLA tim</span>
                                 </div>
                                 <div class="flex items-center gap-2 text-[11px] sm:text-xs text-zinc-600 dark:text-zinc-350">
-                                    <span class="material-symbols-outlined text-indigo-600 dark:text-indigo-400 text-[16px] sm:text-[18px] shrink-0">check_box</span>
+                                    <span class="material-symbols-outlined text-emerald-600 dark:text-emerald-400 text-[16px] sm:text-[18px] shrink-0">check_box</span>
                                     <span class="truncate">Mengelola hak akses repositori file</span>
                                 </div>
                             </div>
@@ -495,7 +495,7 @@
                 <!-- Operating Status Badge -->
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 font-mono text-[10px] text-zinc-600 dark:text-zinc-400">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>ONLINE • Fast Response</span>
+                    <span>ONLINE â€¢ Fast Response</span>
                 </div>
             </div>
 
@@ -509,7 +509,7 @@
                     <li><a href="https://rzdigitalcreative.my.id/#paket-harga" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] transition-colors">Company Profile Bisnis (5 Hal)</a></li>
                     <li><a href="https://rzdigitalcreative.my.id/#paket-harga" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] transition-colors">Toko Online & Kasir POS Web</a></li>
                     <li><a href="https://rzdigitalcreative.my.id/#paket-harga" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] transition-colors">Redesain & Optimasi SEO</a></li>
-                    <li><a href="https://rzdigitalcreative.my.id" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] font-semibold transition-colors flex items-center gap-1">Website Utama ↗</a></li>
+                    <li><a href="https://rzdigitalcreative.my.id" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] font-semibold transition-colors flex items-center gap-1">Website Utama â†—</a></li>
                 </ul>
             </div>
 
@@ -577,7 +577,7 @@
             </div>
             <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 font-mono text-[11px]">
                 <a href="https://portalclient.rzdigitalcreative.my.id" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] transition-colors">portalclient.rzdigitalcreative.my.id</a>
-                <span>•</span>
+                <span>â€¢</span>
                 <a href="https://rzdigitalcreative.my.id" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] transition-colors">rzdigitalcreative.my.id</a>
             </div>
         </div>
@@ -585,3 +585,5 @@
 
 </body>
 </html>
+
+

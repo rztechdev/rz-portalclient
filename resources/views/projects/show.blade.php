@@ -20,8 +20,8 @@
         </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+    <div class="py-4">
+        <div class="w-full space-y-6">
 
             @if(session('success'))
                 <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg">{{ session('success') }}</div>
@@ -40,8 +40,8 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-1 font-medium uppercase tracking-wide">Progress Keseluruhan</p>
                     <div class="flex items-center gap-3">
                         <div class="flex-1">
-                            <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-                                <div class="bg-gradient-to-r from-indigo-500 to-purple-500 h-3 rounded-full transition-all duration-700" style="width: {{ $pct }}%"></div>
+                            <div class="w-full bg-zinc-200 dark:bg-zinc-700 rounded-full h-2">
+                                <div class="bg-emerald-600 h-2 rounded-full transition-all duration-700" style="width: {{ $pct }}%"></div>
                             </div>
                         </div>
                         <span class="text-xl font-bold text-gray-800 dark:text-white">{{ $pct }}%</span>
@@ -79,7 +79,7 @@
                     <h3 class="font-bold text-gray-800 dark:text-white text-lg">Tugas Proyek</h3>
                     @if(auth()->user()->hasRole('admin'))
                     <a href="{{ route('tasks.create', ['project_id' => $project->id]) }}"
-                       class="inline-flex items-center gap-1 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-2 px-4 rounded-lg transition">
+                       class="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold py-2 px-4 rounded-lg transition">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                         Tambah Tugas
                     </a>
@@ -88,10 +88,10 @@
 
                 @php
                     $columns = [
-                        'todo'        => ['label' => 'To Do',       'color' => 'gray',   'icon' => '⏳'],
-                        'in_progress' => ['label' => 'In Progress',  'color' => 'blue',   'icon' => '🔄'],
-                        'review'      => ['label' => 'Review',       'color' => 'yellow', 'icon' => '🔍'],
-                        'done'        => ['label' => 'Done',         'color' => 'green',  'icon' => '✅'],
+                        'todo'        => ['label' => 'To Do',       'color' => 'gray',   'icon' => 'â³'],
+                        'in_progress' => ['label' => 'In Progress',  'color' => 'blue',   'icon' => 'ðŸ”„'],
+                        'review'      => ['label' => 'Review',       'color' => 'yellow', 'icon' => 'ðŸ”'],
+                        'done'        => ['label' => 'Done',         'color' => 'green',  'icon' => 'âœ…'],
                     ];
                 @endphp
 
@@ -144,10 +144,10 @@
                                 </div>
                                 @elseif(auth()->user()->hasRole('admin'))
                                 <div class="flex gap-1 mt-2 opacity-0 group-hover:opacity-100 transition">
-                                    <a href="{{ route('tasks.edit', $task) }}" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium">Edit</a>
-                                    <span class="text-gray-300 dark:text-gray-600">·</span>
+                                    <a href="{{ route('tasks.edit', $task) }}" class="text-xs text-emerald-600 hover:text-emerald-800 font-medium">Edit</a>
+                                    <span class="text-gray-300 dark:text-gray-600">Â·</span>
                                     <a href="{{ route('tasks.show', $task) }}" class="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 font-medium">Detail</a>
-                                    <span class="text-gray-300 dark:text-gray-600">·</span>
+                                    <span class="text-gray-300 dark:text-gray-600">Â·</span>
                                     <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline" onsubmit="return confirm('Hapus tugas ini?')">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="text-xs text-red-500 hover:text-red-700 font-medium">Hapus</button>
@@ -171,28 +171,28 @@
             {{-- Documents Section --}}
             <div class="bg-white dark:bg-gray-800 rounded-2xl shadow p-6">
                 <h3 class="font-bold text-gray-800 dark:text-white text-lg mb-4 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
                     Dokumen Proyek
                 </h3>
 
                 {{-- Upload Form --}}
-                <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data" class="mb-6 p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl hover:border-indigo-400 transition-colors">
+                <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data" class="mb-6 p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl hover:border-emerald-400 transition-colors">
                     @csrf
                     <input type="hidden" name="documentable_type" value="project">
                     <input type="hidden" name="documentable_id" value="{{ $project->id }}">
                     <div class="flex items-center gap-4">
                         <label class="flex-1 flex items-center gap-3 cursor-pointer">
-                            <div class="w-10 h-10 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                            <div class="w-10 h-10 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                             </div>
                             <div>
                                 <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Upload Dokumen</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">PDF, DOC, XLS, PNG, JPG — Maks. 20MB</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">PDF, DOC, XLS, PNG, JPG â€” Maks. 20MB</p>
                             </div>
                             <input type="file" name="file" id="file" class="hidden" required onchange="document.getElementById('file-name').textContent = this.files[0].name">
                         </label>
                         <p id="file-name" class="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs"></p>
-                        <button type="submit" class="shrink-0 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold py-2 px-5 rounded-lg transition">Upload</button>
+                        <button type="submit" class="shrink-0 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold py-2 px-5 rounded-lg transition">Upload</button>
                     </div>
                 </form>
 
@@ -204,17 +204,17 @@
                     @foreach($project->documents as $doc)
                     <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900/40 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700/50 transition">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center shrink-0">
-                                <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                            <div class="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/40 rounded-lg flex items-center justify-center shrink-0">
+                                <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
                             </div>
                             <div>
                                 <p class="text-sm font-medium text-gray-800 dark:text-white">{{ $doc->file_name }}</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Diupload oleh {{ $doc->uploader->name }} · {{ $doc->created_at->diffForHumans() }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Diupload oleh {{ $doc->uploader->name }} Â· {{ $doc->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
                             <a href="{{ route('documents.download', $doc) }}"
-                               class="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 font-medium flex items-center gap-1">
+                               class="text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-800 font-medium flex items-center gap-1">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
                                 Download
                             </a>
@@ -236,3 +236,4 @@
         </div>
     </div>
 </x-app-layout>
+

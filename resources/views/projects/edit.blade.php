@@ -1,4 +1,4 @@
-<x-app-layout>
+﻿<x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <a href="{{ route('projects.show', $project) }}" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition">
@@ -20,20 +20,20 @@
                         <div>
                             <label for="name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Nama Proyek <span class="text-red-500">*</span></label>
                             <input type="text" id="name" name="name" value="{{ old('name', $project->name) }}" required
-                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                         </div>
 
                         <div>
                             <label for="description" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Deskripsi</label>
                             <textarea id="description" name="description" rows="4"
-                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-indigo-500 focus:border-indigo-500">{{ old('description', $project->description) }}</textarea>
+                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-emerald-500 focus:border-emerald-500">{{ old('description', $project->description) }}</textarea>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="status" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Status <span class="text-red-500">*</span></label>
                                 <select id="status" name="status" required
-                                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                                     @foreach(['pending'=>'Pending','active'=>'Aktif','completed'=>'Selesai','archived'=>'Arsip'] as $val => $label)
                                         <option value="{{ $val }}" {{ old('status', $project->status) == $val ? 'selected' : '' }}>{{ $label }}</option>
                                     @endforeach
@@ -42,7 +42,7 @@
                             <div>
                                 <label for="client_id" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Client <span class="text-red-500">*</span></label>
                                 <select id="client_id" name="client_id" required
-                                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                                     @foreach($clients as $client)
                                         <option value="{{ $client->id }}" {{ old('client_id', $project->client_id) == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
                                     @endforeach
@@ -53,7 +53,7 @@
                         <div>
                             <label for="manager_id" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Manager / PIC</label>
                             <select id="manager_id" name="manager_id"
-                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                                 <option value="">-- Tidak ada --</option>
                                 @foreach($managers as $manager)
                                     <option value="{{ $manager->id }}" {{ old('manager_id', $project->manager_id) == $manager->id ? 'selected' : '' }}>{{ $manager->name }}</option>
@@ -65,18 +65,18 @@
                             <div>
                                 <label for="start_date" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Tanggal Mulai</label>
                                 <input type="date" id="start_date" name="start_date" value="{{ old('start_date', $project->start_date) }}"
-                                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                             </div>
                             <div>
                                 <label for="end_date" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Tanggal Selesai</label>
                                 <input type="date" id="end_date" name="end_date" value="{{ old('end_date', $project->end_date) }}"
-                                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                                    class="w-full rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
                             </div>
                         </div>
 
                         <div class="flex justify-end gap-3 pt-2">
                             <a href="{{ route('projects.show', $project) }}" class="py-2 px-5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition font-medium">Batal</a>
-                            <button type="submit" class="py-2 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition">
+                            <button type="submit" class="py-2 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition">
                                 Simpan Perubahan
                             </button>
                         </div>
@@ -101,3 +101,4 @@
         </div>
     </div>
 </x-app-layout>
+

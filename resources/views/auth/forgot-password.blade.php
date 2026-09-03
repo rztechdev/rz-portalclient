@@ -1,4 +1,4 @@
-<x-guest-layout>
+﻿<x-guest-layout>
     <!-- Floating Card Wrapper (coordinates shadow & hover lift) -->
     <div class="w-full sm:max-w-md relative group py-10 flex flex-col justify-center items-center">
         <!-- Realistic dynamic floor shadow -->
@@ -35,14 +35,14 @@
                 </div>
 
                 <div class="mt-8">
-                    <button type="submit" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-md shadow-indigo-600/10 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 dark:focus:ring-indigo-400 focus:ring-offset-zinc-50 dark:focus:ring-offset-zinc-950 transition-all">
+                    <button type="submit" class="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-xl shadow-md shadow-emerald-600/10 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-600 dark:focus:ring-emerald-400 focus:ring-offset-zinc-50 dark:focus:ring-offset-zinc-950 transition-all">
                         Kirim Tautan Reset Sandi
                     </button>
                 </div>
                 
                 <div class="mt-6 text-center text-sm text-zinc-500 dark:text-zinc-400 font-medium">
                     Ingat kata sandi Anda? 
-                    <a href="{{ route('login') }}" class="font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">Kembali ke Log In</a>
+                    <a href="{{ route('login') }}" class="font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors">Kembali ke Log In</a>
                 </div>
             </form>
         </div>

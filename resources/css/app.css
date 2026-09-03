@@ -2,6 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    :root {
+        --font-sans: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+        font-family: var(--font-sans);
+        letter-spacing: -0.011em;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        letter-spacing: -0.025em;
+    }
+
+    /* Prevent mobile browser (iOS / Android) zoom on input / chat focus */
+    @media screen and (max-width: 768px) {
+        input, select, textarea {
+            font-size: 16px !important;
+        }
+    }
+}
+
 @layer utilities {
     /* Map old hex classes to new Zinc/RZ Sage Green scheme */
     .bg-\[\#0F172A\] { @apply bg-zinc-50 dark:bg-zinc-950 transition-colors duration-300; }
@@ -137,30 +163,4 @@
 .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-}
-
-/* Early sidebar state styling before Alpine loads (Desktop only) */
-@media (min-width: 1024px) {
-    html.sidebar-collapsed aside {
-        width: 5rem !important;
-    }
-    html.sidebar-collapsed aside [x-show="sidebarOpen"] {
-        display: none !important;
-    }
-    html.sidebar-collapsed .lg\:pl-64 {
-        padding-left: 5rem !important;
-    }
-    html.sidebar-collapsed header {
-        left: 5rem !important;
-    }
-    html.sidebar-collapsed aside a {
-        justify-content: center !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        gap: 0 !important;
-    }
-    html.sidebar-collapsed aside nav {
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
-    }
 }

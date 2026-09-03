@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -33,7 +33,7 @@
             <a href="{{ url('/') }}" class="flex items-center gap-2.5 group font-sans shrink-0">
                 <img src="{{ asset('images/logo_rz_teks.png') }}" alt="RZ Digital Creative Logo" class="h-8 sm:h-9 w-auto object-contain brightness-0 dark:brightness-100 hover:opacity-95 group-hover:scale-105 transition-all duration-300">
                 <span class="text-lg sm:text-xl font-extrabold tracking-tight text-zinc-900 dark:text-white group-hover:opacity-90 transition-opacity">RZ Portal</span>
-                <span class="text-lg sm:text-xl font-extrabold text-indigo-600 dark:text-indigo-400">.</span>
+                <span class="text-lg sm:text-xl font-extrabold text-emerald-600 dark:text-emerald-400">.</span>
             </a>
 
             <!-- Navigation Links -->

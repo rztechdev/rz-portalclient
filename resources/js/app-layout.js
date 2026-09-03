@@ -1,26 +1,19 @@
 import Alpine from 'alpinejs';
 
 Alpine.data('appLayout', () => ({
-    sidebarOpen: localStorage.getItem('sidebarOpen') !== null 
-        ? localStorage.getItem('sidebarOpen') === 'true' 
-        : window.innerWidth >= 1024,
+    sidebarOpen: false,
     darkMode: localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
     
     init() {
-        this.$watch('sidebarOpen', value => {
-            localStorage.setItem('sidebarOpen', value);
-            if (value) {
-                document.documentElement.classList.remove('sidebar-collapsed');
-            } else {
-                document.documentElement.classList.add('sidebar-collapsed');
-            }
-        });
-        
-        // Sync document class initially
-        if (this.sidebarOpen) {
-            document.documentElement.classList.remove('sidebar-collapsed');
+        // Ensure any legacy collapsed class and key are removed
+        document.documentElement.classList.remove('sidebar-collapsed');
+        localStorage.removeItem('sidebarOpen');
+
+        // Theme initialization
+        if (this.darkMode) {
+            document.documentElement.classList.add('dark');
         } else {
-            document.documentElement.classList.add('sidebar-collapsed');
+            document.documentElement.classList.remove('dark');
         }
     },
     

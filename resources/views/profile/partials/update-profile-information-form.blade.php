@@ -1,4 +1,4 @@
-<section>
+﻿<section>
     <header>
         <h2 class="text-lg font-bold text-zinc-900 dark:text-white tracking-tight">
             {{ __('Informasi Profil') }}
@@ -35,7 +35,7 @@
                     <p class="text-sm mt-3 text-zinc-500 dark:text-zinc-400">
                         {{ __('Alamat email Anda belum diverifikasi.') }}
 
-                        <button form="send-verification" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-bold hover:underline focus:outline-none transition-colors">
+                        <button form="send-verification" class="text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-bold hover:underline focus:outline-none transition-colors">
                             {{ __('Klik di sini untuk mengirim ulang email verifikasi.') }}
                         </button>
                     </p>

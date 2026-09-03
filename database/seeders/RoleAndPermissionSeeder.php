@@ -95,15 +95,30 @@ class RoleAndPermissionSeeder extends Seeder
             }
         }
 
-        // 4. Seed HANYA satu akun admin, kredensialnya dari .env.
-        $admin = User::firstOrCreate(
-            ['email' => config('portal.admin.email')],
-            [
-                'name' => config('portal.admin.name'),
-                'password' => Hash::make(config('portal.admin.password')),
-                'email_verified_at' => now(),
-            ]
-        );
+        // 4. Seed HANYA satu akun admin, kredensialnya diselaraskan dari .env / CRM
+        $targetEmail = config('portal.admin.email', env('ADMIN_EMAIL', 'rzcompanyidn@gmail.com'));
+        $targetName = config('portal.admin.name', env('ADMIN_NAME', 'Owner RZ Digital'));
+        $targetPassword = config('portal.admin.password', env('ADMIN_PASSWORD', '12345678'));
+
+        // Jika ada akun admin lama (misal rztechdevidn@gmail.com), migrasikan ke email admin resmi
+        $oldAdmin = User::where('email', 'rztechdevidn@gmail.com')->first();
+        if ($oldAdmin && $oldAdmin->email !== $targetEmail) {
+            $oldAdmin->update([
+                'email' => $targetEmail,
+                'name' => $targetName,
+                'password' => Hash::make($targetPassword),
+            ]);
+            $admin = $oldAdmin;
+        } else {
+            $admin = User::updateOrCreate(
+                ['email' => $targetEmail],
+                [
+                    'name' => $targetName,
+                    'password' => Hash::make($targetPassword),
+                    'email_verified_at' => now(),
+                ]
+            );
+        }
 
         if (! $admin->hasRole('admin')) {
             $admin->assignRole($adminRole);
