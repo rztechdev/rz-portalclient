@@ -74,7 +74,7 @@ ADMIN_PASSWORD="12345678"
 
 BCRYPT_ROUNDS=12
 LOG_CHANNEL=stack
-LOG_STACK=single
+LOG_STACK=daily
 LOG_LEVEL=error
 
 # ====== DATABASE MYSQL CPANEL ======
@@ -179,3 +179,29 @@ try {
 Setelah berhasil, buka `https://portalclient.rzdigitalcreative.my.id` lalu login:
 * **Email**: `rztechdevidn@gmail.com`
 * **Password**: `12345678` *(segera ganti setelah login)*
+
+---
+
+## ⏰ Langkah 6: Setup Cron Job cPanel (WAJIB)
+
+> [!IMPORTANT]
+> Tanpa langkah ini, **SLA check tiket, auto-prune notifikasi, dan cleanup database TIDAK AKAN JALAN**.
+> Scheduler Laravel membutuhkan pemicu setiap menit dari Cron Job cPanel.
+
+1. Di cPanel, cari dan buka menu **`Cron Jobs`** (atau **Tugas Cron**).
+2. Di bagian **Add New Cron Job**:
+   - **Common Settings**: Pilih **Once Per Minute (`* * * * *`)**
+   - **Command**:
+     ```bash
+     /usr/local/bin/php /home/rzdigita/repositories/rz-portalclient/artisan schedule:run >> /dev/null 2>&1
+     ```
+     *(Catatan: Jika server menggunakan CloudLinux alt-php82, ganti `/usr/local/bin/php` dengan `/opt/cpanel/ea-php82/root/usr/bin/php`)*
+3. Klik tombol **Add New Cron Job**.
+
+**Scheduled commands yang akan jalan otomatis:**
+| Jadwal | Command | Fungsi |
+|--------|---------|--------|
+| Setiap 15 menit | `ticket:check-sla` | Cek tiket yang melewati batas SLA |
+| Setiap hari 00:00 | `notifications:prune --days=30` | Hapus notifikasi > 30 hari |
+| Setiap hari 00:00 | `queue:prune-failed --hours=168` | Hapus failed jobs > 7 hari |
+| Setiap hari 00:00 | `queue:prune-batches` | Hapus job batches lama |
