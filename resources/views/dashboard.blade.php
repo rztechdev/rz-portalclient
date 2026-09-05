@@ -20,7 +20,95 @@
                 </a>
             </div>
         </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        @php
+            $isClient = auth()->user()->hasRole('client');
+            $isAdmin = auth()->user()->hasRole('admin') || auth()->user()->can('invoices.manage');
+        @endphp
+
+        <!-- Invoice Banner (Differentiated for Client vs Admin) -->
+        @if(isset($invoice_summary) && $invoice_summary['unpaid_count'] > 0)
+            @if($isAdmin)
+                <div class="p-4 rounded-xl bg-zinc-900 border border-zinc-800 text-white flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-white flex items-center gap-2">
+                                <span>Monitoring Piutang: Terdapat {{ $invoice_summary['unpaid_count'] }} tagihan klien aktif belum lunas</span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-950 text-emerald-300 border border-emerald-800/60 font-bold">
+                                    Total Piutang: Rp {{ number_format($invoice_summary['total_due'], 0, ',', '.') }}
+                                </span>
+                            </div>
+                            <p class="text-[11px] text-zinc-400 mt-0.5">
+                                Pantau mutasi rekening kas masuk dan lakukan verifikasi pembayaran klien secara berkala.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <a href="{{ route('invoices.index') }}" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-xs">
+                            <span class="material-symbols-outlined text-[16px]">verified</span>
+                            <span>Kelola &amp; Verifikasi Tagihan</span>
+                        </a>
+                    </div>
+                </div>
+            @else
+                <div class="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-xs">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-[24px]">payments</span>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-zinc-900 dark:text-white">
+                                Anda memiliki {{ $invoice_summary['unpaid_count'] }} tagihan proyek yang belum lunas (Sisa: Rp {{ number_format($invoice_summary['total_due'], 0, ',', '.') }})
+                            </div>
+                            <p class="text-[11px] text-zinc-500 dark:text-zinc-400">
+                                Pembayaran dapat dilakukan via Transfer Bank BCA atau Scan QRIS resmi PT RZ Digital Creative Artha.
+                            </p>
+                        </div>
+                    </div>
+                    <a href="{{ route('invoices.index') }}" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-all shadow-xs shrink-0">
+                        <span>Lihat &amp; Bayar Tagihan</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+            @endif
+        @endif
+
+        {{-- Subscription Expiry Warnings --}}
+        @if(!empty($expiring_subscriptions))
+            @foreach($expiring_subscriptions as $sub)
+                <div class="p-4 rounded-xl {{ $sub['status'] === 'expired' ? 'bg-gradient-to-r from-red-500/10 via-red-500/5 to-transparent border border-red-500/30' : 'bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border border-amber-500/30' }} flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-xs">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl {{ $sub['status'] === 'expired' ? 'bg-red-500/20 text-red-600 dark:text-red-400' : 'bg-amber-500/20 text-amber-600 dark:text-amber-400' }} flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-[24px]">{{ $sub['status'] === 'expired' ? 'error' : 'schedule' }}</span>
+                        </div>
+                        <div>
+                            <div class="text-xs font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span>{{ $sub['status'] === 'expired' ? 'Masa berlaku' : 'Masa berlaku akan segera berakhir:' }} <strong>{{ $sub['name'] }}</strong></span>
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase bg-{{ $sub['color'] }}-100 text-{{ $sub['color'] }}-800 dark:bg-{{ $sub['color'] }}-950 dark:text-{{ $sub['color'] }}-300 border border-{{ $sub['color'] }}-200/50">
+                                    {{ $sub['label'] }}
+                                </span>
+                            </div>
+                            <p class="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                                @if($sub['status'] === 'expired')
+                                    Expired sejak {{ $sub['expired'] }}. Segera perpanjang agar layanan tetap aktif.
+                                @else
+                                    Expired {{ $sub['expired'] }} ({{ $sub['sisa_hari'] }} hari lagi) • Biaya: Rp {{ number_format($sub['price'], 0, ',', '.') }}
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                    <a href="{{ $sub['url'] }}" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg {{ $sub['status'] === 'expired' ? 'bg-red-600 hover:bg-red-700' : 'bg-amber-600 hover:bg-amber-700' }} text-white text-xs font-bold transition-all shadow-xs shrink-0">
+                        <span>Lihat Detail</span>
+                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+            @endforeach
+        @endif
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-white dark:bg-zinc-900 p-5 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs">
                     <div class="flex justify-between items-start">
                         <div>

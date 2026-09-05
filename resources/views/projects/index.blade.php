@@ -1,4 +1,4 @@
-﻿<x-app-layout>
+<x-app-layout>
     <div class="w-full space-y-6">
 
             <!-- Header & Actions -->
@@ -66,13 +66,19 @@
                         @php
                             $total = $project->tasks->count();
                             $done  = $project->tasks->where('status','done')->count();
-                            $pct   = $total > 0 ? round($done / $total * 100) : 0;
+                            $pct   = $project->progress_percentage;
                             $statusBadges = [
                                 'pending' => 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-200/50',
                                 'active' => 'bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400 border border-sky-200/50',
                                 'completed' => 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200/50',
                                 'archived' => 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400',
                             ];
+                            $barColor = match(true) {
+                                $pct >= 100 => 'bg-emerald-600',
+                                $pct >= 80  => 'bg-amber-500',
+                                $pct >= 40  => 'bg-sky-500',
+                                default     => 'bg-zinc-400',
+                            };
                         @endphp
                         <div class="bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200/80 dark:border-zinc-800 shadow-xs flex flex-col p-5 space-y-4 hover:border-emerald-500/50 transition-colors">
                             <div class="flex items-start justify-between gap-2">
@@ -88,11 +94,11 @@
                             {{-- Progress Bar --}}
                             <div class="space-y-1.5">
                                 <div class="flex justify-between text-[11px] text-zinc-500 dark:text-zinc-400">
-                                    <span>Progress Tugas</span>
-                                    <span class="font-mono font-bold">{{ $done }}/{{ $total }} ({{ $pct }}%)</span>
+                                    <span>Progress Proyek</span>
+                                    <span class="font-mono font-bold">{{ $done }}/{{ $total }} tuntas ({{ $pct }}%)</span>
                                 </div>
-                                <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-1.5 overflow-hidden">
-                                    <div class="bg-emerald-600 h-1.5 rounded-full transition-all duration-500" style="width: {{ $pct }}%"></div>
+                                <div class="w-full bg-zinc-100 dark:bg-zinc-800 rounded-full h-2 overflow-hidden">
+                                    <div class="{{ $barColor }} h-2 rounded-full transition-all duration-500" style="width: {{ $pct }}%"></div>
                                 </div>
                             </div>
 

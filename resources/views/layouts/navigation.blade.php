@@ -59,6 +59,14 @@
             <span class="truncate">Proyek</span>
         </a>
 
+        <!-- Tagihan & Pembayaran Link -->
+        @php $isInvoices = request()->routeIs('invoices.*'); @endphp
+        <a href="{{ route('invoices.index') }}" 
+           class="flex items-center px-3.5 py-2.5 justify-start gap-3 rounded-lg text-xs transition-colors duration-150 group {{ $isInvoices ? 'bg-emerald-600 text-white font-bold shadow-xs' : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900/70 hover:text-zinc-900 dark:hover:text-zinc-100 font-medium' }}">
+            <span class="material-symbols-outlined text-[20px] {{ $isInvoices ? 'text-white' : 'text-zinc-400 dark:text-zinc-500 group-hover:text-zinc-700 dark:group-hover:text-zinc-300' }} shrink-0">payments</span>
+            <span class="truncate">Tagihan &amp; Pembayaran</span>
+        </a>
+
         <!-- Seksi Administrasi -->
         @canany(['users.manage', 'roles.manage'])
             <div class="flex items-center gap-2 px-3.5 py-2 mt-4 mb-2">
@@ -202,6 +210,33 @@
                         </div>
                     @endif
                 </div>
+
+                @php
+                    $totalNotifications = method_exists(Auth::user(), 'notifications') ? Auth::user()->notifications->count() : 0;
+                    $readNotifications = $totalNotifications - $unreadCount;
+                @endphp
+                @if($totalNotifications > 0)
+                    <div class="px-3 py-2.5 bg-zinc-50/50 dark:bg-zinc-950/50 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between gap-2" x-data>
+                        @if($readNotifications > 0)
+                            <form method="POST" action="{{ route('notifications.destroy-read') }}" x-ref="clearReadNotifs">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" @click.stop="RzSwal.confirmDelete('Hapus {{ $readNotifications }} notifikasi yang sudah dibaca?', $refs.clearReadNotifs)" class="text-[10px] font-semibold text-zinc-500 hover:text-amber-600 dark:hover:text-amber-400 transition-colors">
+                                    Hapus Sudah Dibaca
+                                </button>
+                            </form>
+                        @else
+                            <span></span>
+                        @endif
+                        <form method="POST" action="{{ route('notifications.destroy-all') }}" x-ref="clearAllNotifs">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" @click.stop="RzSwal.confirmDelete('Hapus seluruh {{ $totalNotifications }} notifikasi? Data tidak bisa dikembalikan.', $refs.clearAllNotifs)" class="text-[10px] font-semibold text-rose-500 hover:text-rose-700 dark:text-rose-400 dark:hover:text-rose-300 transition-colors">
+                                Hapus Semua
+                            </button>
+                        </form>
+                    </div>
+                @endif
             </x-slot>
         </x-dropdown>
 
@@ -357,6 +392,13 @@
 
             <!-- Grid Menu Items -->
             <div class="grid grid-cols-2 gap-2.5">
+                <!-- Tagihan & Pembayaran -->
+                <a href="{{ route('invoices.index') }}" 
+                   class="flex items-center gap-2.5 p-3 rounded-xl border border-zinc-200/80 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/50 hover:border-emerald-500 transition-colors {{ request()->routeIs('invoices.*') ? 'ring-1 ring-emerald-500 font-bold' : '' }}">
+                    <span class="material-symbols-outlined text-emerald-600 text-[20px]">payments</span>
+                    <span class="text-xs text-zinc-800 dark:text-zinc-200">Tagihan</span>
+                </a>
+
                 @can('tickets.create')
                     <!-- Buat Tiket Baru -->
                     <a href="{{ route('tickets.create') }}" 

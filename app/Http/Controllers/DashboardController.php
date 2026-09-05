@@ -91,6 +91,12 @@ class DashboardController extends Controller
                 'tickets_monthly' => $this->ticketsMonthlyChart($ticketsQuery),
             ],
             'recent_activity' => $this->recentActivity($user),
+            'invoice_summary' => [
+                'total_due' => (float) ($user->hasRole('client') ? \App\Models\Invoice::where('client_id', $user->id)->where('status', '!=', 'paid')->sum('balance_due') : \App\Models\Invoice::where('status', '!=', 'paid')->sum('balance_due')),
+                'unpaid_count' => (int) ($user->hasRole('client') ? \App\Models\Invoice::where('client_id', $user->id)->where('status', '!=', 'paid')->count() : \App\Models\Invoice::where('status', '!=', 'paid')->count()),
+                'latest' => ($user->hasRole('client') ? \App\Models\Invoice::where('client_id', $user->id)->with('project')->latest()->take(2)->get() : \App\Models\Invoice::with(['project', 'client'])->latest()->take(2)->get()),
+            ],
+            'expiring_subscriptions' => $this->getExpiringSubscriptions($user),
         ];
     }
 
@@ -369,5 +375,24 @@ class DashboardController extends Controller
                 'time_ago' => $item['updated_at']?->diffForHumans() ?? '—',
             ]))
             ->all();
+    }
+
+    private function getExpiringSubscriptions(User $user): array
+    {
+        $query = $this->scopedProjectsQuery($user)
+            ->whereNotNull('subscription_type')
+            ->whereIn('subscription_status', ['akan_expired', 'expired']);
+
+        return $query->get()->map(fn (Project $p) => [
+            'id'     => $p->id,
+            'name'   => $p->name,
+            'status' => $p->subscription_status,
+            'label'  => $p->subscription_status_label,
+            'color'  => $p->subscription_status_color,
+            'expired' => $p->subscription_expired?->format('d M Y'),
+            'sisa_hari' => $p->subscription_sisa_hari,
+            'price'  => $p->subscription_price,
+            'url'    => route('projects.show', $p),
+        ])->all();
     }
 }

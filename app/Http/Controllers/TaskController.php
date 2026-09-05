@@ -89,21 +89,116 @@ class TaskController extends Controller
     }
 
     /**
-     * Update task progress status (technician action).
+     * Update task progress status (technician/admin action).
+     * Clients are strictly read-only and denied.
      */
     public function updateProgress(Request $request, Task $task)
     {
         $user = auth()->user();
-        if ($task->assignee_id !== $user->id && $task->project->manager_id !== $user->id && !$user->hasRole('admin')) {
-            abort(403, 'Anda hanya dapat memperbarui progress tugas yang ditugaskan kepada Anda.');
+
+        // 1. Strict Read-Only protection for Client role
+        if ($user->hasRole('client') || $task->project->client_id === $user->id) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Akses ditolak: Klien hanya memiliki akses baca (read-only) pada papan kanban.',
+                ], 403);
+            }
+            abort(403, 'Akses ditolak: Klien hanya memiliki akses baca (read-only) pada papan kanban.');
+        }
+
+        // 2. Only admin, technician, or project manager can update
+        $canUpdate = $user->hasRole('admin')
+            || ($user->hasRole('technician') && ($task->assignee_id === $user->id || $task->project->manager_id === $user->id))
+            || $task->project->manager_id === $user->id;
+
+        if (!$canUpdate) {
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'Anda tidak memiliki izin untuk memperbarui tugas ini.'], 403);
+            }
+            abort(403, 'Anda tidak memiliki izin untuk memperbarui status tugas ini.');
         }
 
         $request->validate([
-            'status' => 'required|in:todo,in_progress,review,done',
+            'status'       => 'required|in:todo,in_progress,review,done',
+            'link_website' => 'nullable|string',
+            'send_wa'      => 'nullable|boolean',
         ]);
 
         $task->update(['status' => $request->status]);
 
-        return back()->with('success', 'Progress tugas berhasil diperbarui.');
+        // Update project attributes in Portal
+        $projectUpdates = [];
+        if ($request->filled('link_website')) {
+            $projectUpdates['link_website'] = $request->link_website;
+        }
+
+        if ($request->status === 'done') {
+            $hasRemaining = $task->project->tasks()
+                ->where('id', '!=', $task->id)
+                ->where('status', '!=', 'done')
+                ->exists();
+            if (!$hasRemaining) {
+                $projectUpdates['status'] = 'completed';
+            }
+        } elseif (in_array($request->status, ['in_progress', 'review'])) {
+            $projectUpdates['status'] = 'active';
+        } elseif ($request->status === 'todo') {
+            $hasActive = $task->project->tasks()
+                ->where('id', '!=', $task->id)
+                ->whereIn('status', ['in_progress', 'review', 'done'])
+                ->exists();
+            if (!$hasActive) {
+                $projectUpdates['status'] = 'pending';
+            }
+        }
+
+        if (!empty($projectUpdates)) {
+            $task->project->update($projectUpdates);
+        }
+
+        // Two-way sync to CRM
+        $crmSyncUrl = config('services.crm.sync_url', env('CRM_SYNC_URL', 'http://localhost:8022/api/internal/v1/sync-from-portal'));
+        $crmSecret = config('services.crm.sync_secret', env('CRM_SYNC_SECRET', 'rz_portal_sync_secret_key_2026'));
+        $crmSyncData = null;
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::timeout(5)
+                ->withToken($crmSecret)
+                ->post($crmSyncUrl, [
+                    'project_id'    => $task->project->id,
+                    'project_name'  => $task->project->name,
+                    'kanban_status' => $task->status,
+                    'link_website'  => $task->project->link_website,
+                    'send_wa'       => $request->boolean('send_wa', true),
+                ]);
+
+            if ($response->successful()) {
+                $crmSyncData = $response->json();
+            } else {
+                \Illuminate\Support\Facades\Log::warning('CRM sync HTTP status ' . $response->status() . ': ' . $response->body());
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Gagal sinkronkan status ke CRM: ' . $e->getMessage());
+        }
+
+        $waNotice = '';
+        if ($crmSyncData && !empty($crmSyncData['wa_sent'])) {
+            $waNotice = ' & Notifikasi WhatsApp otomatis terkirim ke klien.';
+        } elseif ($request->boolean('send_wa', true) && $crmSyncData && empty($crmSyncData['wa_sent'])) {
+            $waNotice = ' (Catatan CRM: Pesan WA gateway belum dikirim / nomor tidak tersedia).';
+        }
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success'      => true,
+                'message'      => 'Status tugas & CRM berhasil diperbarui ke ' . ucfirst(str_replace('_', ' ', $task->status)) . $waNotice,
+                'task'         => $task,
+                'crm_sync'     => $crmSyncData,
+                'link_website' => $task->project->link_website,
+            ]);
+        }
+
+        return back()->with('success', 'Progress tugas berhasil diperbarui.' . $waNotice);
     }
 }

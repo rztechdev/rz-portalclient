@@ -18,7 +18,28 @@ class TicketStatusUpdatedNotification extends Notification
 
     public function via(object $notifiable): array
     {
-        return ['database', 'broadcast'];
+        $channels = ['database', 'broadcast'];
+        if (!empty($notifiable->email) && config('mail.default') === 'smtp') {
+            $channels[] = 'mail';
+        }
+        return $channels;
+    }
+
+    public function toMail(object $notifiable): \Illuminate\Notifications\Messages\MailMessage
+    {
+        $statusLabel = app(\App\Services\TicketWorkflowService::class)
+            ->statusLabel($this->ticket->status);
+        $url = route('tickets.index');
+
+        return (new \Illuminate\Notifications\Messages\MailMessage)
+            ->subject('[UPDATE TIKET #' . $this->ticket->id . '] ' . $this->ticket->title)
+            ->greeting('Halo, ' . $notifiable->name . '!')
+            ->line('Ada pembaruan status pada tiket Anda: **' . $this->ticket->title . '**')
+            ->line('**Status Terkini:** ' . $statusLabel)
+            ->when($this->customMessage, fn ($mail) => $mail->line('**Catatan:** ' . $this->customMessage))
+            ->action('Lihat Detail Tiket', $url)
+            ->line('Terima kasih telah mempercayakan kebutuhan Anda kepada RZ Digital Creative.')
+            ->salutation('Salam hormat, Tim Support RZ Digital Creative');
     }
 
     protected function payload(object $notifiable): array

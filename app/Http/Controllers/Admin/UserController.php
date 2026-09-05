@@ -47,6 +47,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+            'phone' => ['nullable', 'string', 'max:30'],
             'password' => ['required', 'confirmed', Password::defaults()],
             'roles' => ['array'],
             'roles.*' => ['string', Rule::exists('roles', 'name')],
@@ -55,6 +56,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'phone' => $validated['phone'] ?? null,
             'password' => Hash::make($validated['password']),
             'email_verified_at' => now(),
         ]);
@@ -79,6 +81,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
+            'phone' => ['nullable', 'string', 'max:30'],
             'password' => ['nullable', 'confirmed', Password::defaults()],
             'roles' => ['array'],
             'roles.*' => ['string', Rule::exists('roles', 'name')],
@@ -86,6 +89,7 @@ class UserController extends Controller
 
         $user->name = $validated['name'];
         $user->email = $validated['email'];
+        $user->phone = $validated['phone'] ?? $user->phone;
         if (! empty($validated['password'])) {
             $user->password = Hash::make($validated['password']);
         }

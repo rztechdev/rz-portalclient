@@ -41,6 +41,11 @@ class RoleAndPermissionSeeder extends Seeder
         'Dokumen' => [
             'documents.manage' => 'Unggah & hapus dokumen',
         ],
+        'Tagihan' => [
+            'invoices.view' => 'Melihat tagihan',
+            'invoices.pay' => 'Konfirmasi pembayaran & upload bukti',
+            'invoices.manage' => 'Kelola & verifikasi tagihan (admin)',
+        ],
         'Administrasi' => [
             'users.manage' => 'Kelola pengguna',
             'roles.manage' => 'Kelola role & hak akses',
@@ -55,7 +60,7 @@ class RoleAndPermissionSeeder extends Seeder
      */
     public const ROLE_PRESETS = [
         'ceo' => [
-            'dashboard.view', 'tickets.view', 'projects.view', 'tasks.view',
+            'dashboard.view', 'tickets.view', 'projects.view', 'tasks.view', 'invoices.view',
         ],
         'technician' => [
             'dashboard.view', 'tickets.view', 'tickets.handle',
@@ -63,7 +68,7 @@ class RoleAndPermissionSeeder extends Seeder
         ],
         'client' => [
             'dashboard.view', 'tickets.create', 'tickets.view',
-            'projects.view', 'tasks.view',
+            'projects.view', 'tasks.view', 'invoices.view', 'invoices.pay',
         ],
     ];
 

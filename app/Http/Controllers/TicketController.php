@@ -58,9 +58,34 @@ class TicketController extends Controller
             'sla_resolution_due_at' => $resolutionDueAt,
         ]);
 
-        // Notify all admins and technicians
+        // Notify all admins and technicians via In-App (Database & Reverb)
         $recipients = User::role(['admin', 'technician'])->get();
         Notification::send($recipients, new TicketCreatedNotification($ticket));
+
+        // Send Email notification to official Support Email (rzsupportidn@gmail.com)
+        $adminNotifyEmail = config('flustra.admin_notification_email', env('ADMIN_NOTIFICATION_EMAIL', 'rzsupportidn@gmail.com'));
+        if (!empty($adminNotifyEmail)) {
+            try {
+                Notification::route('mail', $adminNotifyEmail)->notify(new TicketCreatedNotification($ticket));
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning("Portal Admin Email Notification Error: " . $e->getMessage());
+            }
+        }
+
+        // Send WhatsApp alert to all Admin/Staff phone numbers
+        $adminPhones = config('flustra.admin_phones', []);
+        if (!empty($adminPhones)) {
+            try {
+                $clientName = Auth::user()->name;
+                $msg = \App\Services\WhatsApp\PortalWhatsAppTemplates::ticketCreatedForStaff($ticket, $clientName);
+                $waService = app(\App\Services\WhatsApp\FlustraWhatsAppService::class);
+                foreach ($adminPhones as $adminPhone) {
+                    $waService->sendWhatsApp($adminPhone, $msg);
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning("Portal WA Staff Ticket Notification Error: " . $e->getMessage());
+            }
+        }
 
         return redirect()->route('tickets.index')->with('success', 'Tiket berhasil dibuat dan sedang menunggu tindak lanjut dari teknisi.');
     }

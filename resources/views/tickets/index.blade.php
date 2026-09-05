@@ -1,4 +1,4 @@
-﻿<x-app-layout>
+<x-app-layout>
     <div class="w-full space-y-6">
             
             <!-- Header & Action -->
@@ -166,7 +166,7 @@
                                                     {{ $ticket->project->name }}
                                                 </a>
                                             @else
-                                                <span class="text-zinc-400">â€”</span>
+                                                <span class="text-zinc-400">-</span>
                                             @endif
                                         </td>
                                         <td class="px-5 py-3.5 text-right font-mono text-zinc-400 text-[11px]">
@@ -205,7 +205,7 @@
                                         @endif
 
                                         @if($ticket->project)
-                                            <span class="text-zinc-500">â€¢ {{ $ticket->project->name }}</span>
+                                            <span class="text-zinc-500">• {{ $ticket->project->name }}</span>
                                         @endif
                                     </div>
                                     <span class="font-mono text-zinc-400">{{ $ticket->created_at->format('d M Y') }}</span>

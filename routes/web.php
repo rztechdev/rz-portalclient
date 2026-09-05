@@ -11,6 +11,17 @@ use App\Http\Controllers\Admin\RoleController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\Api\InternalSyncController;
+use App\Http\Controllers\NotificationController;
+
+// Internal API: Synchronize Client & Project from RZ CRM
+Route::post('/api/internal/v1/sync-client-project', [InternalSyncController::class, 'syncClientProject'])
+    ->name('api.internal.sync-client-project');
+
+// Internal API: Fetch subscription status for CRM
+Route::get('/api/internal/v1/subscription-status/{project}', [InternalSyncController::class, 'subscriptionStatus'])
+    ->name('api.internal.subscription-status');
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,6 +44,8 @@ Route::middleware('auth')->group(function () {
         auth()->user()->notifications()->where('id', $id)->first()?->markAsRead();
         return response()->json(['success' => true]);
     });
+    Route::delete('/notifications-clear', [NotificationController::class, 'destroyAll'])->name('notifications.destroy-all');
+    Route::delete('/notifications-clear-read', [NotificationController::class, 'destroyRead'])->name('notifications.destroy-read');
 
     // Client Portal Routes (buat tiket)
     Route::middleware('permission:tickets.create')->group(function () {
@@ -95,15 +108,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects/{project}', [ProjectController::class, 'show'])->name('projects.show');
     Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
 
-    // Technician Update Progress Route
+    // Update Task Progress Route (Kanban & Quick Move)
     Route::patch('/tasks/{task}/progress', [TaskController::class, 'updateProgress'])
-        ->middleware('permission:tasks.update_progress')
         ->name('tasks.progress');
 
     // Document Management
     Route::post('documents', [DocumentController::class, 'store'])->name('documents.store');
     Route::delete('documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
     Route::get('documents/{document}/download', [DocumentController::class, 'download'])->name('documents.download');
+
+    // Invoices & Billing Area
+    Route::get('invoices', [InvoiceController::class, 'index'])->name('invoices.index');
+    Route::get('invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('invoices/{invoice}/download-pdf', [InvoiceController::class, 'downloadPdf'])->name('invoices.download-pdf');
+    Route::get('invoices/{invoice}/settlement-pdf', [InvoiceController::class, 'settlementPdf'])->name('invoices.settlement-pdf');
+    Route::get('invoices/{invoice}/receipt', [InvoiceController::class, 'receipt'])->name('invoices.receipt');
+    Route::get('invoices/{invoice}/download-receipt', [InvoiceController::class, 'downloadReceipt'])->name('invoices.download-receipt');
+    Route::post('invoices/{invoice}/upload-proof', [InvoiceController::class, 'uploadPaymentProof'])->name('invoices.upload-proof');
+    Route::post('invoices/{invoice}/verify', [InvoiceController::class, 'verifyPayment'])->name('invoices.verify');
 });
 
 require __DIR__.'/auth.php';

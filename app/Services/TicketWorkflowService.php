@@ -137,6 +137,21 @@ class TicketWorkflowService
             $recipients,
             new TicketStatusUpdatedNotification($ticket, $customMessage)
         );
+
+        // Send WhatsApp notification to Client if phone number is present
+        if ($ticket->client && !empty($ticket->client->phone)) {
+            try {
+                $statusLabel = $customMessage ?: $this->statusLabel($ticket->status);
+                $waMessage = \App\Services\WhatsApp\PortalWhatsAppTemplates::ticketStatusUpdatedForClient(
+                    ticket: $ticket,
+                    clientName: $ticket->client->name,
+                    statusLabel: $statusLabel
+                );
+                app(\App\Services\WhatsApp\FlustraWhatsAppService::class)->sendWhatsApp($ticket->client->phone, $waMessage);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning("Portal WA Ticket Notification Error: " . $e->getMessage());
+            }
+        }
     }
 
     public function notifyManagerChanged(Project $project, ?int $previousManagerId): void

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8"/>
@@ -495,7 +495,7 @@
                 <!-- Operating Status Badge -->
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 font-mono text-[10px] text-zinc-600 dark:text-zinc-400">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>ONLINE â€¢ Fast Response</span>
+                    <span>ONLINE • Fast Response</span>
                 </div>
             </div>
 
@@ -509,7 +509,7 @@
                     <li><a href="https://rzdigitalcreative.my.id/#paket-harga" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] transition-colors">Company Profile Bisnis (5 Hal)</a></li>
                     <li><a href="https://rzdigitalcreative.my.id/#paket-harga" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] transition-colors">Toko Online & Kasir POS Web</a></li>
                     <li><a href="https://rzdigitalcreative.my.id/#paket-harga" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] transition-colors">Redesain & Optimasi SEO</a></li>
-                    <li><a href="https://rzdigitalcreative.my.id" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] font-semibold transition-colors flex items-center gap-1">Website Utama â†—</a></li>
+                    <li><a href="https://rzdigitalcreative.my.id" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] font-semibold transition-colors flex items-center gap-1">Website Utama ↗</a></li>
                 </ul>
             </div>
 
@@ -577,7 +577,7 @@
             </div>
             <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-4 font-mono text-[11px]">
                 <a href="https://portalclient.rzdigitalcreative.my.id" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] transition-colors">portalclient.rzdigitalcreative.my.id</a>
-                <span>â€¢</span>
+                <span>•</span>
                 <a href="https://rzdigitalcreative.my.id" target="_blank" class="hover:text-[#8B9B70] dark:hover:text-[#A2B187] transition-colors">rzdigitalcreative.my.id</a>
             </div>
         </div>

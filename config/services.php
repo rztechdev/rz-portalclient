@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'crm' => [
+        'sync_url'    => env('CRM_SYNC_URL', 'http://localhost:8022/api/internal/v1/sync-from-portal'),
+        'sync_secret' => env('CRM_SYNC_SECRET', 'rz_portal_sync_secret_key_2026'),
+    ],
+
 ];

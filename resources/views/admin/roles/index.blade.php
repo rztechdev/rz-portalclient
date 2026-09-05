@@ -1,4 +1,4 @@
-﻿<x-app-layout>
+<x-app-layout>
     <div class="w-full space-y-6">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
 
@@ -33,7 +33,7 @@
                                         @endif
                                     </div>
                                     <p class="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5 font-mono">
-                                        {{ $role->name === 'admin' ? 'Seluruh izin' : $role->permissions_count . ' izin' }} Â· {{ $role->users_count }} pengguna
+                                        {{ $role->name === 'admin' ? 'Seluruh izin' : $role->permissions_count . ' izin' }} • {{ $role->users_count }} pengguna
                                     </p>
                                 </div>
                             </div>
@@ -44,9 +44,9 @@
                                 </a>
                                 @unless($isCore)
                                     <form method="POST" action="{{ route('admin.roles.destroy', $role) }}"
-                                          onsubmit="return confirm('Hapus role {{ $role->name }}?')">
+                                          x-data x-ref="deleteRole{{ $role->id }}">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="p-1.5 rounded-lg text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition" title="Hapus">
+                                        <button type="button" @click="RzSwal.confirmDelete('Hapus role {{ $role->name }}?', $refs.deleteRole{{ $role->id }})" class="p-1.5 rounded-lg text-zinc-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition" title="Hapus">
                                             <span class="material-symbols-outlined text-[18px] block">delete</span>
                                         </button>
                                     </form>

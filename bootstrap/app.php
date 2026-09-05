@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
         // Percaya header proxy (ngrok / cPanel di belakang proxy) agar HTTPS & host terdeteksi benar.
         $middleware->trustProxies(at: '*');
 
+        $middleware->validateCsrfTokens(except: [
+            'api/*',
+        ]);
+
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,

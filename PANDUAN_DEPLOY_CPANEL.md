@@ -1,4 +1,4 @@
-﻿# 📘 Panduan Lengkap Deploy RZ Portal Client ke cPanel
+# 📘 Panduan Lengkap Deploy RZ Portal Client ke cPanel
 
 Panduan ini untuk mengaktifkan project **RZ Portal Client** di subdomain **`portalclient.rzdigitalcreative.my.id`**.
 
@@ -54,9 +54,9 @@ Panduan ini untuk mengaktifkan project **RZ Portal Client** di subdomain **`port
 3. Isi dengan konfigurasi berikut (sesuaikan nama DB dan password yang dibuat di Langkah 1):
 
 ```ini
-APP_NAME="RZ Portal"
+APP_NAME="RZ Portal Klien"
 APP_ENV=production
-APP_KEY=base64:pW83Qy6ROZ/ijVn1bghBUleBJUpsX65Y8Pslsy1rjzU=
+APP_KEY=base64:MF7F5ue8hStSRbzLPck1rp9qe2jzJhoaB5zXpMlF80w=
 APP_DEBUG=false
 APP_TIMEZONE=Asia/Jakarta
 APP_URL=https://portalclient.rzdigitalcreative.my.id
@@ -66,26 +66,26 @@ APP_FALLBACK_LOCALE=en
 APP_FAKER_LOCALE=id_ID
 
 APP_MAINTENANCE_DRIVER=file
-BCRYPT_ROUNDS=12
 
+# ====== AKUN ADMIN PORTAL ======
+ADMIN_NAME="Owner RZ Digital"
+ADMIN_EMAIL=rzcompanyidn@gmail.com
+ADMIN_PASSWORD="12345678"
+
+BCRYPT_ROUNDS=12
 LOG_CHANNEL=stack
 LOG_STACK=single
 LOG_LEVEL=error
-
-# ====== AKUN ADMIN AWAL (Setelah Migrate) ======
-ADMIN_NAME="Administrator"
-ADMIN_EMAIL=rztechdevidn@gmail.com
-ADMIN_PASSWORD=12345678
 
 # ====== DATABASE MYSQL CPANEL ======
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=rzdigita_portal
-DB_USERNAME=rzdigita_portal_user
-DB_PASSWORD=GANTI_DENGAN_PASSWORD_DB_ANDA
+DB_DATABASE=rzdigita_db_rz_portalclient
+DB_USERNAME=rzdigita_db_rzdigitalcreative
+DB_PASSWORD="LE9P@rUVe84mXhV"
 
-SESSION_DRIVER=database
+SESSION_DRIVER=file
 SESSION_LIFETIME=120
 SESSION_ENCRYPT=false
 
@@ -94,9 +94,20 @@ QUEUE_CONNECTION=sync
 FILESYSTEM_DISK=local
 BROADCAST_CONNECTION=log
 
-MAIL_MAILER=log
-MAIL_FROM_ADDRESS="no-reply@rzdigitalcreative.my.id"
-MAIL_FROM_NAME="${APP_NAME}"
+# ====== EMAIL NOTIFIKASI CPANEL SMTP ======
+MAIL_MAILER=smtp
+MAIL_SCHEME=smtps
+MAIL_HOST=mail.rzdigitalcreative.my.id
+MAIL_PORT=465
+MAIL_USERNAME=company@rzdigitalcreative.my.id
+MAIL_PASSWORD=@kebersamaanf0nsi13
+MAIL_FROM_ADDRESS="company@rzdigitalcreative.my.id"
+MAIL_FROM_NAME="RZ Digital Creative"
+
+# Catatan Operasional:
+# Konfigurasi WhatsApp Gateway (Flustra), Rekening BCA, Barcode QRIS,
+# dan Notifikasi Admin tersinkronisasi otomatis dari database CRM / CompanySetting,
+# tanpa perlu membuka atau mengedit file .env ini lagi.
 ```
 4. Klik **Save Changes**.
 

@@ -88,10 +88,10 @@
                             <h4 class="text-sm font-bold text-red-600 dark:text-red-400">Zona Bahaya</h4>
                             <p class="text-xs text-gray-500 dark:text-gray-400">Proyek dan semua tugas di dalamnya akan dihapus secara permanen.</p>
                         </div>
-                        <form action="{{ route('projects.destroy', $project) }}" method="POST" onsubmit="return confirm('Hapus proyek ini?')">
+                        <form action="{{ route('projects.destroy', $project) }}" method="POST" x-data x-ref="deleteProjectForm">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="py-2 px-4 bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/20 dark:hover:bg-red-950/40 dark:text-red-400 font-semibold text-sm rounded-lg transition">
+                            <button type="button" @click="RzSwal.confirmDelete('Hapus proyek ini?', $refs.deleteProjectForm)" class="py-2 px-4 bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/20 dark:hover:bg-red-950/40 dark:text-red-400 font-semibold text-sm rounded-lg transition">
                                 Hapus Proyek
                             </button>
                         </form>

@@ -77,7 +77,22 @@ class ProjectController extends Controller
             abort(403, 'Anda tidak diizinkan mengakses proyek ini.');
         }
 
-        $project->load(['client', 'manager', 'tasks.assignee', 'documents.uploader']);
+        if ($project->tasks()->count() === 0) {
+            \App\Models\Task::create([
+                'project_id'  => $project->id,
+                'name'        => 'Pengerjaan ' . $project->name,
+                'description' => 'Tugas utama pengerjaan website.',
+                'status'      => match($project->status) {
+                    'completed' => 'done',
+                    'active'    => 'in_progress',
+                    default     => 'todo',
+                },
+                'priority'    => 'medium',
+                'assignee_id' => $project->manager_id,
+            ]);
+        }
+
+        $project->load(['client', 'manager', 'tasks.assignee', 'documents.uploader', 'latestInvoice']);
         $users = User::role(['admin', 'technician'])->get();
         return view('projects.show', compact('project', 'users'));
     }

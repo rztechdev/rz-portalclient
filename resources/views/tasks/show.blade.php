@@ -1,4 +1,4 @@
-﻿<x-app-layout>
+<x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-3">
             <a href="{{ route('projects.show', $task->project) }}" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition">
@@ -94,7 +94,7 @@
                             </div>
                             <div>
                                 <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Upload Dokumen</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">PDF, DOC, XLS, PNG, JPG â€” Maks. 20MB</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">PDF, DOC, XLS, PNG, JPG — Maks. 20MB</p>
                             </div>
                             <input type="file" name="file" id="file" class="hidden" required onchange="document.getElementById('file-name').textContent = this.files[0].name">
                         </label>
@@ -115,7 +115,7 @@
                             </div>
                             <div>
                                 <p class="text-sm font-medium text-gray-800 dark:text-white">{{ $doc->file_name }}</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Diupload oleh {{ $doc->uploader->name }} Â· {{ $doc->created_at->diffForHumans() }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Diupload oleh {{ $doc->uploader->name }} • {{ $doc->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">
@@ -124,9 +124,9 @@
                                 Download
                             </a>
                             @if(auth()->user()->hasRole('admin') || $doc->uploaded_by === auth()->id())
-                            <form action="{{ route('documents.destroy', $doc) }}" method="POST" onsubmit="return confirm('Hapus dokumen ini?')">
+                            <form action="{{ route('documents.destroy', $doc) }}" method="POST" x-data x-ref="deleteTaskDoc{{ $doc->id }}">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700 transition">
+                                <button type="button" @click="RzSwal.confirmDelete('Hapus dokumen ini?', $refs.deleteTaskDoc{{ $doc->id }})" class="text-red-500 hover:text-red-700 transition">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                 </button>
                             </form>

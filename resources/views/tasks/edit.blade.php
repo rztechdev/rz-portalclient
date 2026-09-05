@@ -106,9 +106,9 @@
                         </div>
                         <div class="flex items-center gap-3">
                             <a href="{{ route('documents.download', $doc) }}" class="text-sm text-emerald-600 dark:text-emerald-400 hover:underline">Download</a>
-                            <form action="{{ route('documents.destroy', $doc) }}" method="POST" onsubmit="return confirm('Hapus?')">
+                            <form action="{{ route('documents.destroy', $doc) }}" method="POST" x-data x-ref="deleteEditDoc{{ $doc->id }}">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700 text-sm">Hapus</button>
+                                <button type="button" @click="RzSwal.confirmDelete('Hapus?', $refs.deleteEditDoc{{ $doc->id }})" class="text-red-500 hover:text-red-700 text-sm">Hapus</button>
                             </form>
                         </div>
                     </div>
